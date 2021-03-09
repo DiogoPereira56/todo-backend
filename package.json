@@ -6,6 +6,7 @@
   "private": true,
   "license": "UNLICENSED",
   "scripts": {
+    "migrate": "npx knex migrate:latest --knexfile ./db/knexfile.js",
     "prebuild": "rimraf dist",
     "build": "nest build",
     "format": "prettier --write \"src/**/*.ts\" \"test/**/*.ts\"",
@@ -23,10 +24,21 @@
   "dependencies": {
     "@nestjs/common": "^7.6.13",
     "@nestjs/core": "^7.6.13",
+    "@nestjs/graphql": "^7.9.11",
+    "@nestjs/mongoose": "^7.2.4",
     "@nestjs/platform-express": "^7.6.13",
+    "@willsoto/nestjs-objection": "^5.0.0",
+    "apollo-server-express": "^2.21.0",
+    "graphql": "^15.5.0",
+    "graphql-tools": "^7.0.4",
+    "knex": "^0.95.1",
+    "mongoose": "^5.11.18",
+    "mysql": "^2.18.1",
+    "objection": "^2.2.14",
     "reflect-metadata": "^0.1.13",
     "rimraf": "^3.0.2",
-    "rxjs": "^6.6.6"
+    "rxjs": "^6.6.6",
+    "type-graphql": "^1.1.1"
   },
   "devDependencies": {
     "@nestjs/cli": "^7.5.6",
