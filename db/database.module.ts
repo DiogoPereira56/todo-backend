@@ -1,6 +1,5 @@
 import { ObjectionModule } from "@willsoto/nestjs-objection";
 import { Module } from "@nestjs/common";
-import { knexSnakeCaseMappers } from "objection";
 import { ConfigModule, ConfigService } from '@nestjs/config';
 
 
@@ -14,12 +13,11 @@ import { ConfigModule, ConfigService } from '@nestjs/config';
           config: {
             client: 'mysql',
             connection: {
-                host : '127.0.0.1',
-                user : 'root',
-                password : '',
-                database : 'todo'
+                host : config.get('DB_HOST'),
+                user : config.get('DB_USERNAME'),
+                password : config.get('DB_PASSWORD'),
+                database : config.get('DB_DATABASE'),
             },
-            ...knexSnakeCaseMappers(),
           },
         };
       },

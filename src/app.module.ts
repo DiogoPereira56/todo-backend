@@ -5,11 +5,16 @@ import { GraphQLModule } from '@nestjs/graphql';
 import { join } from 'path';
 import { ClientModule } from './clients/clients.module';
 import { DatabaseModule } from '../db/database.module'
+import { ConfigModule } from '@nestjs/config';
 
 @Module({
   imports: [
     ClientModule,
     DatabaseModule,
+    //Makes the '.env' variables global 
+    ConfigModule.forRoot({
+      isGlobal: true,
+    }),
     GraphQLModule.forRoot({
       autoSchemaFile: join(process.cwd(), 'src/schema.gql')
     }),
