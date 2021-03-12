@@ -5,9 +5,11 @@ import { Clients } from './clients.model'
 import { ClientsService } from './clients.service';
 
 @Module({
-  //Registers your objection models
-  imports: [ObjectionModule.forFeature([Clients])],
-
+  imports: [
+    //Registers your objection models
+    ObjectionModule.forFeature([Clients])
+  ],
   providers: [ClientsResolver, ClientsService],
+  exports: [ClientsService],
 })
 export class ClientModule {}

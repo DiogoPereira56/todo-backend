@@ -18,11 +18,12 @@ export class ClientsService{
         return await this.ClientModel.query().findOne('email', email);
     }
 
+    //Creates and returns a new Client
     async createClient(client : ClientInput): Promise<Clients>{
         const newClient = await this.ClientModel.query().insert({
             name: client.name,
             email: client.email,
-            password: client.password,
+            password: client.password, //TODO: Hash the Password
         })
         return newClient;
     }
