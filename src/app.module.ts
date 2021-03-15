@@ -6,11 +6,13 @@ import { join } from 'path';
 import { ClientModule } from './clients/clients.module';
 import { DatabaseModule } from '../db/database.module'
 import { ConfigModule } from '@nestjs/config';
+import { AuthModule } from './auth/auth.module';
 
 @Module({
   imports: [
     ClientModule,
     DatabaseModule,
+    AuthModule,
     //Makes the '.env' variables global 
     ConfigModule.forRoot({
       isGlobal: true,
