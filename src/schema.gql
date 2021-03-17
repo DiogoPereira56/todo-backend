@@ -2,14 +2,24 @@
 # THIS FILE WAS AUTOMATICALLY GENERATED (DO NOT MODIFY)
 # ------------------------------------------------------
 
-type CreateClientDto {
+type ClientType {
   idClient: ID!
   name: String!
   email: String!
   password: String!
 }
 
+type AuthType {
+  client: ClientType!
+  token: String!
+}
+
 type Query {
   hello: String!
-  clients: [CreateClientDto!]!
+  clients: [ClientType!]!
+  henlo: String!
+}
+
+type Mutation {
+  login(password: String!, email: String!): AuthType!
 }

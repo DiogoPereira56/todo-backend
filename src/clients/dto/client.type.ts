@@ -2,7 +2,7 @@ import { Field, ObjectType, ID } from "@nestjs/graphql";
 
 //Client Table
 @ObjectType()
-export class CreateClientDto{
+export class ClientType{
     @Field(() => ID)
     idClient: number;
     @Field()

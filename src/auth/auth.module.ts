@@ -5,12 +5,16 @@ import { PassportModule } from '@nestjs/passport';
 import { JwtModule } from '@nestjs/jwt';
 import { LocalStrategy } from './strategy/local.strategy';
 import { JwtStrategy } from './strategy/jwt.strategy';
+import { ObjectionModule } from '@willsoto/nestjs-objection';
+import { Clients } from '../clients/clients.model'
+import { AuthResolver } from './auth.resolver';
 
 
 @Module({
   imports: [
     ClientModule,
     PassportModule,
+    ObjectionModule.forFeature([Clients]),
     JwtModule.registerAsync({
       useFactory: () => ({
         secret: process.env.JWT_SECRET,
@@ -20,7 +24,7 @@ import { JwtStrategy } from './strategy/jwt.strategy';
       }),
     }),
   ],
-  providers: [AuthService, LocalStrategy, JwtStrategy],
-  exports: [AuthService, JwtModule],
+  providers: [AuthService, LocalStrategy, JwtStrategy, AuthResolver],
+  exports: [AuthService, JwtModule, AuthResolver],
 })
 export class AuthModule {}

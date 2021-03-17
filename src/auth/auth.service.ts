@@ -9,25 +9,23 @@ export class AuthService {
     private jwtService: JwtService,
   ){}
 
-  //Takes an email and password, checks if Client exists and if the password is correct 
+  //Takes an email and password, checks if Client exists and if the password is correct, then gives them a JWT Token
   async validateClient(email: string, password: string): Promise<any> {
-    console.log('asd')
     const client = await this.clientsService.getOneClient(email);
 
     if (client && client.password === password) {
-      const { password, ...result } = client;
-      return result;
-      //return true; 
+      const token = await this.giveJwtToken(client)
+
+      return {client, token}
     }
-    return null;
-    //throw new UnauthorizedException('Incorrect Email or Password');
+    
+    throw new UnauthorizedException('Incorrect Email or Password');
   }
 
-  async login(client: any) {
+  //Gives a Token to a Client
+  async giveJwtToken(client: any): Promise<String> {
     const payload = { name: client.name, sub: client.idClient };
-    return {
-      access_token: this.jwtService.sign(payload),
-    };
+    return this.jwtService.sign(payload);
   }
   
 }

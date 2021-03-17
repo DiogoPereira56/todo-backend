@@ -24,7 +24,7 @@ export class AppController {
   //@UseGuards(AuthGuard('local'))
   @Post('auth/login')
   async login(@Request() req: any){
-    return this.authService.login(req.client);
+    return this.authService.giveJwtToken(req.client);
   }
 
   @UseGuards(AuthGuard('jwt'))

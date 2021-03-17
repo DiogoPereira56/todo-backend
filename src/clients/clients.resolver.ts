@@ -1,6 +1,6 @@
 import { Resolver, Query } from "@nestjs/graphql";
 import {ClientsService } from './clients.service';
-import { CreateClientDto } from '../dto/createClient.dto'
+import { ClientType } from './dto/client.type'
 
 
 @Resolver()
@@ -13,7 +13,7 @@ export class ClientsResolver{
     }
 
     //Returns an array with all Clients
-    @Query(() => [CreateClientDto] )
+    @Query(() => [ClientType] )
     async clients(){
         return this.clientsService.getAllClients();
     }
