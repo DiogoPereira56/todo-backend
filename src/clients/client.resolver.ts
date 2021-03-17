@@ -1,5 +1,5 @@
 import { Resolver, Query } from "@nestjs/graphql";
-import {ClientsService } from './clients.service';
+import {ClientsService } from './client.service';
 import { ClientType } from './dto/client.type'
 
 

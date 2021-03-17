@@ -2,7 +2,7 @@ import { Field, Int, ObjectType } from '@nestjs/graphql';
 import {Model} from 'objection' 
 
 @ObjectType()
-export class Clients extends Model {
+export class Client extends Model {
   //Name of the Table
   static get tableName() {
     return 'clients';

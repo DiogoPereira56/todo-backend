@@ -1,7 +1,7 @@
 import { Injectable, UnauthorizedException } from '@nestjs/common';
 import { JwtService } from '@nestjs/jwt';
-import { Clients } from 'src/clients/clients.model';
-import { ClientsService } from '../clients/clients.service';
+import { Client } from 'src/clients/client.model';
+import { ClientsService } from '../clients/client.service';
 import { AuthType } from './dto/auth.type';
 
 @Injectable()
@@ -25,7 +25,7 @@ export class AuthService {
   }
 
   //Gives a Token to a Client
-  async giveJwtToken(client: Clients): Promise<string> {
+  async giveJwtToken(client: Client): Promise<string> {
     const payload = { name: client.name, sub: client.idClient };
     return this.jwtService.sign(payload);
   }

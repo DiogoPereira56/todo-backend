@@ -2,7 +2,7 @@
 # THIS FILE WAS AUTOMATICALLY GENERATED (DO NOT MODIFY)
 # ------------------------------------------------------
 
-type Clients {
+type Client {
   idClient: Int!
   name: String!
   email: String!
@@ -16,7 +16,7 @@ type ClientType {
 }
 
 type AuthType {
-  client: Clients!
+  client: Client!
   token: String!
 }
 

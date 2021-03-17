@@ -1,12 +1,12 @@
 import { Module } from '@nestjs/common';
 import { AuthService } from './auth.service';
-import { ClientModule } from '../clients/clients.module';
+import { ClientModule } from '../clients/client.module';
 import { PassportModule } from '@nestjs/passport';
 import { JwtModule } from '@nestjs/jwt';
 import { LocalStrategy } from './strategy/local.strategy';
 import { JwtStrategy } from './strategy/jwt.strategy';
 import { ObjectionModule } from '@willsoto/nestjs-objection';
-import { Clients } from '../clients/clients.model'
+import { Client } from '../clients/client.model'
 import { AuthResolver } from './auth.resolver';
 
 
@@ -14,7 +14,7 @@ import { AuthResolver } from './auth.resolver';
   imports: [
     ClientModule,
     PassportModule,
-    ObjectionModule.forFeature([Clients]),
+    ObjectionModule.forFeature([Client]),
     JwtModule.registerAsync({
       useFactory: () => ({
         secret: process.env.JWT_SECRET,
