@@ -1,10 +1,10 @@
 import { Field, ObjectType } from "@nestjs/graphql";
-import { ClientType } from "src/clients/dto/client.type";
+import { Clients } from "src/clients/clients.model";
 
 @ObjectType()
 export class AuthType{
-    @Field(() => ClientType)
-    client: ClientType;
+    @Field(() => Clients)
+    client: Clients;
     @Field()
     token: string;
 }
