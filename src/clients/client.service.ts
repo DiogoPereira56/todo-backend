@@ -1,10 +1,9 @@
 import { Inject, Injectable } from "@nestjs/common";
 import { Client } from "src/clients/client.model";
-//import { CreateClientDto } from '../dto/createClient.dto'
 import { ClientInput } from './dto/client.input'
 
 @Injectable()
-export class ClientsService{
+export class ClientService{
     //injects the Clients
     constructor(@Inject(Client) private readonly ClientModel: typeof Client){}
 

@@ -1,15 +1,15 @@
 import { Module } from '@nestjs/common';
 import { ObjectionModule } from '@willsoto/nestjs-objection';
-import { ClientsResolver } from './client.resolver';
+import { ClientResolver } from './client.resolver';
 import { Client } from './client.model'
-import { ClientsService } from './client.service';
+import { ClientService } from './client.service';
 
 @Module({
   imports: [
     //Registers your objection models
     ObjectionModule.forFeature([Client])
   ],
-  providers: [ClientsResolver, ClientsService],
-  exports: [ClientsService],
+  providers: [ClientResolver, ClientService],
+  exports: [ClientService],
 })
 export class ClientModule {}
