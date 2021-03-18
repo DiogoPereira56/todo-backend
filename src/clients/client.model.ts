@@ -5,7 +5,7 @@ import {Model} from 'objection'
 export class Client extends Model {
   //Name of the Table
   static get tableName() {
-    return 'clients';
+    return 'client';
   }
 
   //Name of the id column in client's table

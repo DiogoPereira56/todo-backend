@@ -23,6 +23,7 @@ type AuthType {
 type Query {
   hello: String!
   clients: [ClientType!]!
+  client(idClient: Float!): Client!
   henlo: String!
 }
 
