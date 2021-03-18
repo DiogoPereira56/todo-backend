@@ -1,7 +1,10 @@
-import { Args, Mutation, Query, Resolver } from "@nestjs/graphql";
-import { ClientInput } from "src/clients/dto/client.input";
+import { Req, Res } from "@nestjs/common";
+import { Args, Context, Mutation, Query, Resolver } from "@nestjs/graphql";
+import cookieParser from "cookie-parser";
+import { Request, Response } from "express";
 import { AuthService } from "./auth.service";
 import { AuthType } from "./dto/auth.type";
+
 
 @Resolver('Auth')
 export class AuthResolver {
@@ -12,15 +15,21 @@ export class AuthResolver {
         return 'henlo';
     }
 
-    /* Takes an Email and Password, validates them, and returns the client with a JWT Token */
+    /* 
+        Takes an Email and Password, validates them, and returns the client with a JWT Token
+        Also stores the JWT Token in a cookie 
+    */
     @Mutation(() => AuthType)
     public async login( 
             @Args('email') email: string,
             @Args('password') password: string,
+            @Context() ctx: { res: Response, req: Request },
         ){
-        const response = await this.authService.validateClient(email, password);
+        const validated = await this.authService.validateClient(email, password);
+
+        ctx.res.cookie('token', validated.token)
         
-        return {client: response.client, token: response.token};
+        return {client: validated.client, token: validated.token};
         
     }
     
