@@ -12,7 +12,7 @@ import { AuthModule } from './auth/auth.module';
     ClientModule,
     DatabaseModule,
     AuthModule,
-    //Makes the '.env' variables global 
+    /** Makes the '.env' variables global */
     ConfigModule.forRoot({
       isGlobal: true,
     }),

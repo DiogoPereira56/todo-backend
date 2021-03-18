@@ -2,7 +2,6 @@ import { ExtractJwt, Strategy } from 'passport-jwt';
 import { PassportStrategy } from '@nestjs/passport';
 import { Injectable, UnauthorizedException } from '@nestjs/common';
 import { ClientService } from 'src/clients/client.service';
-import { ClientType } from 'src/clients/dto/client.type';
 
 @Injectable()
 export class JwtStrategy extends PassportStrategy(Strategy) {
@@ -14,6 +13,16 @@ export class JwtStrategy extends PassportStrategy(Strategy) {
     });
   }
 
+  /** Receives an id from a client and checks if he exists
+   *
+   * @param  payload - An object with a client's name and a id 
+   * 
+   * @return {Client} - An object representing a client
+   *
+   * @example
+   *
+   *     validate(payload);
+   */
   async validate(payload: {name: string, sub: number}) {
     const client = this.ClientService.getClientById(payload.sub);
 

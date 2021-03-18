@@ -3,7 +3,6 @@ import { AuthService } from './auth.service';
 import { ClientModule } from '../clients/client.module';
 import { PassportModule } from '@nestjs/passport';
 import { JwtModule } from '@nestjs/jwt';
-import { LocalStrategy } from './strategy/local.strategy';
 import { JwtStrategy } from './strategy/jwt.strategy';
 import { ObjectionModule } from '@willsoto/nestjs-objection';
 import { Client } from '../clients/client.model'
@@ -18,13 +17,13 @@ import { AuthResolver } from './auth.resolver';
     JwtModule.registerAsync({
       useFactory: () => ({
         secret: process.env.JWT_SECRET,
-        signOptions: { //Sets timer for Login to expire
+        signOptions: { /** Sets a timer for Login to expire */
           expiresIn: '30s' 
         },
       }),
     }),
   ],
-  providers: [AuthService, LocalStrategy, JwtStrategy, AuthResolver],
+  providers: [AuthService, JwtStrategy, AuthResolver],
   exports: [AuthService, JwtModule, AuthResolver],
 })
 export class AuthModule {}

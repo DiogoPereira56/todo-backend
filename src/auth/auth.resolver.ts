@@ -14,14 +14,29 @@ export class AuthResolver {
         private clientService: ClientService,
         ) {}
 
-    @Query(() => String )
-    async henlo(){
-        return 'henlo';
-    }
-
-    /* 
-        Takes an Email and Password, validates them, and returns the client with a JWT Token
+    /** Takes an Email and Password, validates them, and returns the client with a JWT Token
         Also stores the JWT Token in a cookie 
+       
+    
+        @param {string} email - A string representing an email
+        @param {string} password - A string representing a password
+
+        @returns {AuthType} Returns a client and it's JWT Token
+
+        @example
+            mutation{
+                login(
+                    email:"teste@hotmail.com",
+                    password:"pass"
+                ) {
+                    client{
+                    idClient
+                    name
+                    email
+                    }
+                    token
+                }
+            }
     */
     @Mutation(() => AuthType)
     public async login( 
@@ -36,7 +51,28 @@ export class AuthResolver {
         return {client: validated.client, token: validated.token};
     }
     
-    /* Takes a Client and registers them onto the DataBase */
+    /** Takes a Client and registers them onto the DataBase
+
+        @param {string} name - A string representing a name
+        @param {string} email - A string representing an email
+        @param {string} password - A string representing a password
+
+        @returns {Client} Returns the created client
+
+        @example
+            mutation{
+                register(
+                    input: {
+                    name: "fernanda5"
+                    email: "fernanda5@hotmail.com"
+                    password: "p123"
+                    }
+                ){
+                    idClient
+                    name
+                }
+            }
+    */
     @Mutation(() => Client)
     public async register( @Args('input') input: ClientInput ){
         return this.clientService.createClient(input);

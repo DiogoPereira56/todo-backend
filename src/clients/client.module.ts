@@ -6,7 +6,7 @@ import { ClientService } from './client.service';
 
 @Module({
   imports: [
-    //Registers your objection models
+    /** Registers your objection models */
     ObjectionModule.forFeature([Client])
   ],
   providers: [ClientResolver, ClientService],

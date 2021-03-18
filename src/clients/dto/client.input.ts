@@ -1,7 +1,9 @@
 import { InputType, Field } from "@nestjs/graphql";
 
 
-//Client possible input Table
+/**
+ * Client's possible input Table
+ */
 @InputType()
 export class ClientInput{
     @Field()
