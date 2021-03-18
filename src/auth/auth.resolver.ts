@@ -1,14 +1,18 @@
-import { Req, Res } from "@nestjs/common";
 import { Args, Context, Mutation, Query, Resolver } from "@nestjs/graphql";
-import cookieParser from "cookie-parser";
 import { Request, Response } from "express";
+import { Client } from "src/clients/client.model";
+import { ClientService } from "src/clients/client.service";
+import { ClientInput } from "src/clients/dto/client.input";
 import { AuthService } from "./auth.service";
 import { AuthType } from "./dto/auth.type";
 
 
 @Resolver('Auth')
 export class AuthResolver {
-    constructor(private authService: AuthService) {}
+    constructor(
+        private authService: AuthService,
+        private clientService: ClientService,
+        ) {}
 
     @Query(() => String )
     async henlo(){
@@ -30,7 +34,12 @@ export class AuthResolver {
         ctx.res.cookie('token', validated.token)
         
         return {client: validated.client, token: validated.token};
-        
+    }
+    
+    /* Takes a Client and registers them onto the DataBase */
+    @Mutation(() => Client)
+    public async register( @Args('input') input: ClientInput ){
+        return this.clientService.createClient(input);
     }
     
 }
