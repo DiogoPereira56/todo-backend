@@ -1,4 +1,4 @@
-import { Inject, Injectable } from "@nestjs/common";
+import { Inject, Injectable, UnauthorizedException } from "@nestjs/common";
 import { Client } from "src/clients/client.model";
 import { ClientInput } from './dto/client.input'
 
@@ -54,11 +54,17 @@ export class ClientService{
             createClient(client);
     */
     async createClient(client : ClientInput): Promise<Client>{
-        const newClient = await this.ClientModel.query().insert({
-            name: client.name,
-            email: client.email,
-            password: client.password, //TODO: Hash the Password
-        })
-        return newClient;
+        try{
+            const newClient = await this.ClientModel.query().insert({
+                name: client.name,
+                email: client.email,
+                password: client.password, //TODO: Hash the Password
+            })
+            return newClient;
+            
+        }catch(err){
+            throw new UnauthorizedException(' That email is already in use, sorry :/ ')
+        }
+        
     }
 }
