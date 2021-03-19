@@ -1,11 +1,16 @@
 import { Inject, Injectable, UnauthorizedException } from "@nestjs/common";
 import { Client } from "src/clients/client.model";
 import { ClientInput } from './dto/client.input'
+import * as bcrypt from 'bcrypt';
+import { ConfigService } from "@nestjs/config";
 
 @Injectable()
 export class ClientService{
     /** Injects the Clients */
-    constructor(@Inject(Client) private readonly ClientModel: typeof Client){}
+    constructor(
+        @Inject(Client) private readonly ClientModel: typeof Client,
+        private config: ConfigService,
+        ){}
 
     /** Returns an array with all Clients
      * 
@@ -54,17 +59,18 @@ export class ClientService{
             createClient(client);
     */
     async createClient(client : ClientInput): Promise<Client>{
+        const hash = await bcrypt.hash(client.password, parseInt(this.config.get('BCRYPT_SALT').toString()));
         try{
             const newClient = await this.ClientModel.query().insert({
                 name: client.name,
                 email: client.email,
-                password: client.password, //TODO: Hash the Password
+                password: hash, 
             })
             return newClient;
             
         }catch(err){
             throw new UnauthorizedException(' That email is already in use, sorry :/ ')
         }
-        
+
     }
 }
