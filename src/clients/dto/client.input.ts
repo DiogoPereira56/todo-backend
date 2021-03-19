@@ -1,4 +1,5 @@
 import { InputType, Field } from "@nestjs/graphql";
+import { IsEmail, IsNotEmpty } from "class-validator";
 
 
 /**
@@ -8,8 +9,12 @@ import { InputType, Field } from "@nestjs/graphql";
 export class ClientInput{
     @Field()
     name: string;
+
     @Field()
+    @IsEmail()
     email: string;
+
     @Field()
+    @IsNotEmpty()
     password: string;
 }
