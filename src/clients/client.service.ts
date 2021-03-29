@@ -1,8 +1,9 @@
 import { Inject, Injectable, UnauthorizedException } from "@nestjs/common";
 import { Client } from "src/clients/client.model";
-import { ClientInput } from './dto/client.input'
+import { ClientRegisterInput } from './dto/client.register'
 import * as bcrypt from 'bcrypt';
 import { ConfigService } from "@nestjs/config";
+
 
 @Injectable()
 export class ClientService{
@@ -58,14 +59,14 @@ export class ClientService{
      *  @example
             createClient(client);
     */
-    async createClient(client : ClientInput): Promise<Boolean>{
-        const hash = await bcrypt.hash(client.password, parseInt(this.config.get('BCRYPT_SALT').toString()));
+    async createClient( name: string, email: string, password: string ): Promise<Boolean>{
+        const hash = await bcrypt.hash(password, parseInt(this.config.get('BCRYPT_SALT').toString()));
         try{
             const newClient = await this.ClientModel.query().insert({
-                name: client.name,
-                email: client.email,
+                name: name,
+                email: email,
                 password: hash, 
-            })
+            });
             console.log(newClient.name + ' got Registered :)');
             return true;
             

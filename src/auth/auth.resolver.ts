@@ -2,7 +2,8 @@ import { Args, Context, Mutation, Query, Resolver } from "@nestjs/graphql";
 import { Request, Response } from "express";
 import { Client } from "src/clients/client.model";
 import { ClientService } from "src/clients/client.service";
-import { ClientInput } from "src/clients/dto/client.input";
+import { ClientLoginInput } from "src/clients/dto/client.login";
+import { ClientRegisterInput } from "src/clients/dto/client.register";
 import { AuthService } from "./auth.service";
 import { AuthType } from "./dto/auth.type";
 
@@ -40,11 +41,10 @@ export class AuthResolver {
     */
     @Mutation(() => Boolean)
     public async login( 
-            @Args('email') email: string,
-            @Args('password') password: string,
+            @Args() clientInput: ClientLoginInput,
             @Context() ctx: { res: Response, req: Request },
         ){
-        const validated = await this.authService.validateClient(email, password, ctx.res);
+        const validated = await this.authService.validateClient(clientInput.email, clientInput.password, ctx.res);
 
         return validated;
     }
@@ -72,8 +72,8 @@ export class AuthResolver {
             }
     */
     @Mutation(() => Boolean)
-    public async register( @Args('input' ) input: ClientInput ){
-        return this.clientService.createClient(input);
+    public async register( @Args() clientInput: ClientRegisterInput ){
+        return this.clientService.createClient(clientInput.name, clientInput.email, clientInput.password);
     }
     
 }
