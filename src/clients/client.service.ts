@@ -58,7 +58,7 @@ export class ClientService{
      *  @example
             createClient(client);
     */
-    async createClient(client : ClientInput): Promise<Client>{
+    async createClient(client : ClientInput): Promise<Boolean>{
         const hash = await bcrypt.hash(client.password, parseInt(this.config.get('BCRYPT_SALT').toString()));
         try{
             const newClient = await this.ClientModel.query().insert({
@@ -67,10 +67,10 @@ export class ClientService{
                 password: hash, 
             })
             console.log(newClient.name + ' got Registered :)');
-            return newClient;
+            return true;
             
         }catch(err){
-            throw new UnauthorizedException(' That email is already in use, sorry :/ ')
+            return false;
         }
 
     }

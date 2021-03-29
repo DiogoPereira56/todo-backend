@@ -22,7 +22,7 @@ type Query {
 
 type Mutation {
   login(password: String!, email: String!): Boolean!
-  register(input: ClientInput!): Client!
+  register(input: ClientInput!): Boolean!
 }
 
 input ClientInput {

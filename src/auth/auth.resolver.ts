@@ -71,7 +71,7 @@ export class AuthResolver {
                 }
             }
     */
-    @Mutation(() => Client)
+    @Mutation(() => Boolean)
     public async register( @Args('input' ) input: ClientInput ){
         return this.clientService.createClient(input);
     }
