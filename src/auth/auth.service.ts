@@ -4,6 +4,7 @@ import { Client } from 'src/clients/client.model';
 import { ClientService } from '../clients/client.service';
 import { AuthType } from './dto/auth.type';
 import * as bcrypt from 'bcrypt';
+import { Response } from 'express';
 
 @Injectable()
 export class AuthService {
@@ -23,16 +24,18 @@ export class AuthService {
    *
    *     validateClient(client.email, client.password);
    */
-  async validateClient(email: string, password: string): Promise<AuthType> {
+  async validateClient(email: string, password: string, res: Response): Promise<Boolean> {
     const client = await this.ClientService.getOneClient(email);
 
     if ( client && await bcrypt.compare(password, client.password) ) {
-      const token = await this.giveJwtToken(client)
+      const token = await this.giveJwtToken(client);
+      res.cookie('token', token);
 
-      return {client, token}
+      console.log(client.name + ' just logged in :D ');
+      return true;
     }
     
-    throw new UnauthorizedException('Incorrect Email or Password');
+    return false;
   }
 
   /** Gives a Token to a Client

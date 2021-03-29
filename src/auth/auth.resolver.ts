@@ -38,17 +38,15 @@ export class AuthResolver {
                 }
             }
     */
-    @Mutation(() => AuthType)
+    @Mutation(() => Boolean)
     public async login( 
             @Args('email') email: string,
             @Args('password') password: string,
             @Context() ctx: { res: Response, req: Request },
         ){
-        const validated = await this.authService.validateClient(email, password);
+        const validated = await this.authService.validateClient(email, password, ctx.res);
 
-        ctx.res.cookie('token', validated.token)
-        
-        return {client: validated.client, token: validated.token};
+        return validated;
     }
     
     /** Takes a Client and registers them onto the DataBase
@@ -74,7 +72,7 @@ export class AuthResolver {
             }
     */
     @Mutation(() => Client)
-    public async register( @Args('input') input: ClientInput ){
+    public async register( @Args('input' ) input: ClientInput ){
         return this.clientService.createClient(input);
     }
     

@@ -15,18 +15,13 @@ type ClientType {
   password: String!
 }
 
-type AuthType {
-  client: Client!
-  token: String!
-}
-
 type Query {
   clients: [ClientType!]!
   client(idClient: Float!): Client!
 }
 
 type Mutation {
-  login(password: String!, email: String!): AuthType!
+  login(password: String!, email: String!): Boolean!
   register(input: ClientInput!): Client!
 }
 

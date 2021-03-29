@@ -66,6 +66,7 @@ export class ClientService{
                 email: client.email,
                 password: hash, 
             })
+            console.log(newClient.name + ' got Registered :)');
             return newClient;
             
         }catch(err){
