@@ -3,7 +3,7 @@ import { IsEmail, IsNotEmpty } from "class-validator";
 
 
 /**
- * Client's possible input Table
+ * Client's possible Login input Table
  */
 @ArgsType()
 export class ClientLoginInput{

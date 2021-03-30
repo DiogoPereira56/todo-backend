@@ -1,11 +1,9 @@
-import { Args, Context, Mutation, Query, Resolver } from "@nestjs/graphql";
+import { Args, Context, Mutation, Resolver } from "@nestjs/graphql";
 import { Request, Response } from "express";
-import { Client } from "src/clients/client.model";
 import { ClientService } from "src/clients/client.service";
 import { ClientLoginInput } from "src/clients/dto/client.login";
 import { ClientRegisterInput } from "src/clients/dto/client.register";
 import { AuthService } from "./auth.service";
-import { AuthType } from "./dto/auth.type";
 
 
 @Resolver('Auth')
@@ -15,29 +13,29 @@ export class AuthResolver {
         private clientService: ClientService,
         ) {}
 
-    /** Takes an Email and Password, validates them, and returns the client with a JWT Token
-        Also stores the JWT Token in a cookie 
-       
-    
-        @param {string} email - A string representing an email
-        @param {string} password - A string representing a password
-
-        @returns {AuthType} Returns a client and it's JWT Token
-
-        @example
-            mutation{
-                login(
-                    email:"teste@hotmail.com",
-                    password:"pass"
-                ) {
-                    client{
-                    idClient
-                    name
-                    email
-                    }
-                    token
-                }
-            }
+    /** 
+     * Takes an Email and Password, validates them, and returns the client with a JWT Token
+     * Also stores the JWT Token in a cookie 
+     *
+     *  @param {string} email - A string representing an email
+     *  @param {string} password - A string representing a password
+     *
+     *  @returns {Boolean} Returns true if client was validated, or false if it wasn't
+     *
+     *  @example
+     *      mutation{
+     *          login(
+     *              email:"teste@hotmail.com",
+     *              password:"pass"
+     *          ) {
+     *              client{
+     *              idClient
+     *              name
+     *              email
+     *              }
+     *              token
+     *          }
+     *      }
     */
     @Mutation(() => Boolean)
     public async login( 
@@ -49,13 +47,14 @@ export class AuthResolver {
         return validated;
     }
     
-    /** Takes a Client and registers them onto the DataBase
+    /** 
+     * Takes a Client and registers them onto the DataBase
 
         @param {string} name - A string representing a name
         @param {string} email - A string representing an email
         @param {string} password - A string representing a password
 
-        @returns {Client} Returns the created client
+        @returns {Boolean} Returns true if client was created, false if it didn't
 
         @example
             mutation{

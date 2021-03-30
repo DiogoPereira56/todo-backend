@@ -1,8 +1,7 @@
-import { Injectable, UnauthorizedException } from '@nestjs/common';
+import { Injectable } from '@nestjs/common';
 import { JwtService } from '@nestjs/jwt';
 import { Client } from 'src/clients/client.model';
 import { ClientService } from '../clients/client.service';
-import { AuthType } from './dto/auth.type';
 import * as bcrypt from 'bcrypt';
 import { Response } from 'express';
 
@@ -13,12 +12,14 @@ export class AuthService {
     private jwtService: JwtService,
   ){}
 
-  /** Takes an email and password, checks if Client exists and if the password is correct, then gives them a JWT Token
+  /** 
+   * Takes an email and password, checks if Client exists and if the password is correct, then gives them a JWT Token
    *
    * @param {string} email - A client's email
    * @param {string} password - A client's password
+   * @param {Response} res - A POST's response
    * 
-   * @return {AuthType} - Returns a client and it's JWT Token
+   * @return {Boolean} - Returns true if client was validated, or false if it wasn't
    *
    * @example
    *
@@ -38,7 +39,8 @@ export class AuthService {
     return false;
   }
 
-  /** Gives a Token to a Client
+  /** 
+   * Gives a Token to a Client
    *
    * @param {Client} client - Represents a client
    * 

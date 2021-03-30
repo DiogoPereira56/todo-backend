@@ -11,7 +11,8 @@ export class ClientResolver{
     constructor(private readonly ClientService: ClientService){}
 
     
-    /** Returns an array with all Clients
+    /** 
+     * Returns an array with all Clients
      *
      *  @returns {Client[]} - Returns an Array with all clients
      *
@@ -26,11 +27,12 @@ export class ClientResolver{
             }
     */
     @Query(() => [ClientType] )
-    async clients(){
+    async clients(): Promise<Client[]>{
         return this.ClientService.getAllClients();
     }
 
-    /** Returns a Client with the given id
+    /** 
+     * Returns a Client with the given id
      *
      *  @param {number} idClient - a Client's id
      * 

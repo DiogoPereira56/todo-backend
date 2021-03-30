@@ -1,9 +1,9 @@
-import { InputType, Field, ArgsType } from "@nestjs/graphql";
+import { Field, ArgsType } from "@nestjs/graphql";
 import { IsEmail, IsNotEmpty } from "class-validator";
 
 
 /**
- * Client's possible input Table
+ * Client's possible Register input Table
  */
 @ArgsType()
 export class ClientRegisterInput{

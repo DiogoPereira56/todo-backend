@@ -13,7 +13,8 @@ export class ClientService{
         private config: ConfigService,
         ){}
 
-    /** Returns an array with all Clients
+    /** 
+     * Returns an array with all Clients
      * 
      *  @returns {Client} - Returns an array with all Clients
      *
@@ -24,7 +25,8 @@ export class ClientService{
         return await this.ClientModel.query();
     }
 
-    /** Returns a Client with the given email
+    /** 
+     * Returns a Client with the given email
      *
      *  @param {string} email - a Client's email
      * 
@@ -37,7 +39,8 @@ export class ClientService{
         return await this.ClientModel.query().findOne('email', email);
     }
 
-    /** Returns a Client with the given id
+    /** 
+     *  Returns a Client with the given id
      *
      *  @param {number} idClient - a Client's id
      * 
@@ -50,14 +53,16 @@ export class ClientService{
         return await this.ClientModel.query().findOne('idClient', idClient);
     }
 
-    /** Creates and returns a new Client
+    /** 
+     *  Creates and returns a new Client
      *
-     *  @param {ClientInput} client - A new client
+     *  @param {string} name - A new client's name
+     *  @param {string} email - A new client's email
+     *  @param {string} password - A new client's password
      * 
-     *  @returns {Client} - Returns a newly created Client
+     *  @returns {Boolean} - returns true if client was created, false if it didn't
      *
-     *  @example
-            createClient(client);
+     *  @example createClient(clientInput.name, clientInput.email, clientInput.password);
     */
     async createClient( name: string, email: string, password: string ): Promise<Boolean>{
         const hash = await bcrypt.hash(password, parseInt(this.config.get('BCRYPT_SALT').toString()));
@@ -73,6 +78,6 @@ export class ClientService{
         }catch(err){
             return false;
         }
-
     }
+    
 }

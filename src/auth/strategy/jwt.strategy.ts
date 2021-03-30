@@ -13,7 +13,8 @@ export class JwtStrategy extends PassportStrategy(Strategy) {
     });
   }
 
-  /** Receives an id from a client and checks if he exists
+  /** 
+   * Receives an id from a client and checks if he exists
    *
    * @param  payload - An object with a client's name and a id 
    * 
