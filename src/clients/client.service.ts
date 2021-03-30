@@ -1,6 +1,5 @@
-import { Inject, Injectable, UnauthorizedException } from "@nestjs/common";
+import { Inject, Injectable } from "@nestjs/common";
 import { Client } from "src/clients/client.model";
-import { ClientRegisterInput } from './dto/client.register'
 import * as bcrypt from 'bcrypt';
 import { ConfigService } from "@nestjs/config";
 
