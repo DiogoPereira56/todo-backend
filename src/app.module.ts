@@ -6,10 +6,12 @@ import { ClientModule } from './clients/client.module';
 import { DatabaseModule } from '../db/database.module'
 import { ConfigModule } from '@nestjs/config';
 import { AuthModule } from './auth/auth.module';
+import { ListOfTasksModule } from './Lists/list.module';
 
 @Module({
   imports: [
     ClientModule,
+    ListOfTasksModule,
     DatabaseModule,
     AuthModule,
     /** Makes the '.env' variables global */
@@ -17,9 +19,13 @@ import { AuthModule } from './auth/auth.module';
       isGlobal: true,
     }),
     GraphQLModule.forRoot({
-      autoSchemaFile: join(process.cwd(), 'src/schema.gql'),
-      context: ({req, res}) => ({req, res}),
-    }),
+      autoSchemaFile: 'schema.gql',
+      context: ({ req, res }) => ({ req, res }),
+      cors: {
+          origin: 'http://localhost:3001',
+          credentials: true,
+      },
+  }),
   ],
  
   providers: [AppService],

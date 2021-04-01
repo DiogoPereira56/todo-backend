@@ -3,7 +3,7 @@ import { JwtService } from '@nestjs/jwt';
 import { Client } from 'src/clients/client.model';
 import { ClientService } from '../clients/client.service';
 import * as bcrypt from 'bcrypt';
-import { Response } from 'express';
+import { Request, Response } from 'express';
 
 @Injectable()
 export class AuthService {
@@ -32,11 +32,35 @@ export class AuthService {
       const token = await this.giveJwtToken(client);
       res.cookie('token', token);
 
+      /* console.log(this.jwtService.decode(token)); */
+      console.log(token + '\n');
       console.log(client.name + ' just logged in :D ');
       return true;
     }
-    
     return false;
+  }
+
+  /** 
+   * Takes the Request from a POST, decodes the JWT cookie and returns the decoded version if valid, if not, returns 'invalid'
+   * 
+   * @param {Request} req - A POST's Request
+   * 
+   * @return {String | { [key: string]: string; }} - Returns a decoded JTW token, or 'invalid'
+   *
+   * @example decodeToken(ctx.req);
+   *
+   */
+  async decodeToken(req: Request): Promise<String | { [key: string]: string; }> {
+
+    const decodedToken = this.jwtService.decode(req.cookies.token);
+    console.log('\n' + req.cookies.token + '\n');
+    console.log(decodedToken);
+    if(decodedToken){
+      
+      return decodedToken;
+    }
+    else
+      return 'invalid'
   }
 
   /** 
@@ -51,7 +75,7 @@ export class AuthService {
    *     giveJwtToken(client)
    */
   async giveJwtToken(client: Client): Promise<string> {
-    const payload = { name: client.name, sub: client.idClient };
+    const payload = { name: client.name, id: client.idClient };
     return this.jwtService.sign(payload);
   }
   
