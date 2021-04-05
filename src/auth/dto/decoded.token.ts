@@ -1,8 +1,9 @@
 import { Field, Int, ObjectType } from "@nestjs/graphql";
 
 /***
- * The type that login used to export
+ * A JWT decoded Token
  */
+
 @ObjectType()
 export class decodedToken{
     @Field()

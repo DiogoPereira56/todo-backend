@@ -35,6 +35,7 @@ type Query {
 }
 
 type Mutation {
+  addList(listName: String!): Boolean!
   login(email: String!, password: String!): Boolean!
   register(name: String!, email: String!, password: String!): Boolean!
 }

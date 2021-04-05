@@ -4,12 +4,15 @@ import { Client } from 'src/clients/client.model';
 import { ClientService } from '../clients/client.service';
 import * as bcrypt from 'bcrypt';
 import { Request, Response } from 'express';
+import { ConfigService } from '@nestjs/config';
+import { decodedToken } from './dto/decoded.token';
 
 @Injectable()
 export class AuthService {
   constructor(
     private ClientService: ClientService,
     private jwtService: JwtService,
+    private config: ConfigService,
   ){}
 
   /** 
@@ -50,17 +53,16 @@ export class AuthService {
    * @example decodeToken(ctx.req);
    *
    */
-  async decodeToken(req: Request): Promise<String | { [key: string]: string; }> {
+  async decodeToken(req: Request): Promise<decodedToken> {
 
-    const decodedToken = this.jwtService.decode(req.cookies.token);
-    console.log('\n' + req.cookies.token + '\n');
-    console.log(decodedToken);
-    if(decodedToken){
-      
-      return decodedToken;
-    }
-    else
-      return 'invalid'
+    /* const decoded = this.jwtService.decode(req.cookies.token); */
+    const decoded = this.jwtService.verify(req.cookies.token, this.config.get('BCRYPT_SALT')) as decodedToken;
+    
+    /* console.log('\n' + req.cookies.token + '\n'); */
+    /* console.log(decoded.id); */
+    console.log(decoded);
+    
+    return decoded;
   }
 
   /** 
