@@ -2,17 +2,17 @@ import {Model} from 'objection'
 
 export class ListOfTasks extends Model {
   static get tableName() {
-    return 'List Of Tasks';
+    return 'list_of_tasks';
   }
   static get relationMappings() {
-    const Clients = require('./clients');
+    const Client = require('./client');
     return {
       clients: {
-        relation: Model.HasOneRelation,
-        modelClass: Clients,
+        relation: Model.HasManyRelation,
+        modelClass: Client,
         join: {
-          from: 'listOfTasks.idClient',
-          to: 'client.id'
+          from: 'list_of_tasks.idClient',
+          to: 'client.idClient'
         }
       },
     }

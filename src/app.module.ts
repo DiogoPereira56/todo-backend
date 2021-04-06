@@ -7,11 +7,13 @@ import { DatabaseModule } from '../db/database.module'
 import { ConfigModule } from '@nestjs/config';
 import { AuthModule } from './auth/auth.module';
 import { ListOfTasksModule } from './Lists/list.module';
+import { TaskModule } from './tasks/task.module';
 
 @Module({
   imports: [
     ClientModule,
     ListOfTasksModule,
+    TaskModule,
     DatabaseModule,
     AuthModule,
     /** Makes the '.env' variables global */

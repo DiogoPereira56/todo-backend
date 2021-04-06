@@ -2,6 +2,22 @@
 # THIS FILE WAS AUTOMATICALLY GENERATED (DO NOT MODIFY)
 # ------------------------------------------------------
 
+type task {
+  """id of the Task"""
+  idTask: Int!
+  idList: Int!
+  title: String!
+  complete: Boolean!
+  description: String!
+}
+
+type ListOfTasks {
+  idList: Int!
+  idClient: Int!
+  listName: String!
+  tasks: [task!]!
+}
+
 type Client {
   idClient: Int!
   name: String!
@@ -20,18 +36,14 @@ type decodedToken {
   id: Int!
 }
 
-type ListOfTasks {
-  idList: Int!
-  idClient: Int!
-  listName: String!
-}
-
 type Query {
   clients: [ClientType!]!
   client(idClient: Float!): Client!
   lists: [ListOfTasks!]!
+  test: [ListOfTasks!]!
   removeToken: String!
   getDecodedToken: decodedToken!
+  tasks: [task!]!
 }
 
 type Mutation {

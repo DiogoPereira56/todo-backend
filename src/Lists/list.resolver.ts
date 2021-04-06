@@ -39,9 +39,12 @@ export class ListOfTasksResolver{
     */
     @Mutation(() => Boolean)
     public async addList( @Args('listName') listName: string, @Context() ctx: { res: Response, req: Request } ){
-
-
         return this.ListOfTasksService.createList(listName, ctx.req);
+    }
+
+    @Query(() => [ListOfTasks])
+    async test(){
+        return this.ListOfTasksService.test();
     }
 
 }

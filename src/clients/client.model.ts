@@ -1,5 +1,6 @@
 import { Field, Int, ObjectType } from '@nestjs/graphql';
 import {Model} from 'objection' 
+import { ListOfTasks } from '../Lists/list.model'
 
 @ObjectType()
 export class Client extends Model {
@@ -22,6 +23,20 @@ export class Client extends Model {
   email : string;
   
   password : string;
+
+  static get relationMappings() {
+    
+    return {
+      lists: {
+        relation: Model.HasManyRelation,
+        modelClass: ListOfTasks,
+        join: {
+          from: 'client.idClient',
+          to: 'list_of_tasks.idClient'
+        }
+      },
+    }
+  }
 
 }
 
