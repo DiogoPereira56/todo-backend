@@ -6,11 +6,13 @@ import * as bcrypt from 'bcrypt';
 import { Request, Response } from 'express';
 import { ConfigService } from '@nestjs/config';
 import { decodedToken } from './dto/decoded.token';
+import { ListOfTasksService } from 'src/Lists/list.service';
 
 @Injectable()
 export class AuthService {
   constructor(
     private ClientService: ClientService,
+    private ListOfTasksService: ListOfTasksService,
     private jwtService: JwtService,
     private config: ConfigService,
   ){}
@@ -80,5 +82,22 @@ export class AuthService {
     const payload = { name: client.name, id: client.idClient };
     return this.jwtService.sign(payload);
   }
+
+  /** 
+     *  Creates a new List, returns true if successfull, false if not
+     *
+     *  @param {string} listName - A new Lists's name
+     * 
+     *  @returns {Boolean} - returns true if List was created, false if it didn't
+     *
+     *  @example createList(listName, idClient);
+    */
+   async createList( listName: string, req: Request ): Promise<Boolean>{
+    const decodedToken = await this.decodeToken(req)
+    
+    this.ListOfTasksService.createList(listName, decodedToken.id);
+
+    return true;
+}
   
 }

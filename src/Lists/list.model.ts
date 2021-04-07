@@ -27,8 +27,8 @@ export class ListOfTasks extends Model {
   listName : string;
 
 
-  @Field(() => [Task])
-  tasks : Task[];
+  /* @Field(() => [Task])
+  tasks : Task[]; */
 
   static get relationMappings() {
     

@@ -1,11 +1,16 @@
-import { Resolver, Query, Mutation, Args, Context } from "@nestjs/graphql";
+import { Resolver, Query, Mutation, Args, Context, ResolveField, Parent } from "@nestjs/graphql";
 import { Request, Response } from "express";
+import { Task } from "src/tasks/task.model";
+import { TaskService } from "src/tasks/task.service";
 import { ListOfTasks } from "./list.model";
 import { ListOfTasksService } from "./list.service";
 
-@Resolver()
+@Resolver(() => ListOfTasks)
 export class ListOfTasksResolver{
-    constructor(private readonly ListOfTasksService: ListOfTasksService){}
+    constructor(
+        private readonly ListOfTasksService: ListOfTasksService,
+        private readonly TaskService: TaskService
+        ){}
 
     /** 
      * Returns an array with all lists
@@ -27,24 +32,15 @@ export class ListOfTasksResolver{
         return this.ListOfTasksService.getAllLists();
     }
 
-    /** 
-     *  Registers a new List onto the DataBase 
-     * 
-     *  @param {newList} name - A string representing a name
-     * 
-     * @returns {Boolean} Returns true if List was created, false if it didn't
-     * 
-     * @example
-     * 
-    */
-    @Mutation(() => Boolean)
-    public async addList( @Args('listName') listName: string, @Context() ctx: { res: Response, req: Request } ){
-        return this.ListOfTasksService.createList(listName, ctx.req);
+    @Query(() => [ListOfTasks])
+    async testList(){
+        return this.ListOfTasksService.testList();
     }
 
-    @Query(() => [ListOfTasks])
-    async test(){
-        return this.ListOfTasksService.test();
+    @ResolveField('tasks', () => [Task])
+    async getTasks(@Parent() listOfTasks: ListOfTasks): Promise<Task[]> {
+      const { idList } = listOfTasks;
+      return this.TaskService.getListTasks( idList );
     }
 
 }

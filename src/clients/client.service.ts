@@ -78,5 +78,9 @@ export class ClientService{
             return false;
         }
     }
+
+/*     async getAllClientInformation(idClient : number): Promise<Client>{
+        return await this.ClientModel.query().findOne('idClient', idClient);
+    } */
     
 }

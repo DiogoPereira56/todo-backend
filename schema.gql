@@ -22,6 +22,7 @@ type Client {
   idClient: Int!
   name: String!
   email: String!
+  lists: [ListOfTasks!]!
 }
 
 type ClientType {
@@ -39,15 +40,16 @@ type decodedToken {
 type Query {
   clients: [ClientType!]!
   client(idClient: Float!): Client!
+  getClientInformation(idClient: Float!): Client!
   lists: [ListOfTasks!]!
-  test: [ListOfTasks!]!
+  testList: [ListOfTasks!]!
+  tasks: [task!]!
   removeToken: String!
   getDecodedToken: decodedToken!
-  tasks: [task!]!
 }
 
 type Mutation {
-  addList(listName: String!): Boolean!
   login(email: String!, password: String!): Boolean!
   register(name: String!, email: String!, password: String!): Boolean!
+  addList(listName: String!): Boolean!
 }

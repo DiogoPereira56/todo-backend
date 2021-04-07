@@ -128,4 +128,19 @@ export class AuthResolver {
             return this.authService.decodeToken(ctx.req);
     }
 
+    /** 
+     *  Registers a new List onto the DataBase 
+     * 
+     *  @param {newList} name - A string representing a name
+     * 
+     * @returns {Boolean} Returns true if List was created, false if it didn't
+     * 
+     * @example
+     * 
+    */
+     @Mutation(() => Boolean)
+     public async addList( @Args('listName') listName: string, @Context() ctx: { res: Response, req: Request } ){
+         return this.authService.createList(listName, ctx.req);
+     }
+
 }

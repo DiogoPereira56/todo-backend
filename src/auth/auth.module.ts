@@ -7,11 +7,13 @@ import { JwtStrategy } from './strategy/jwt.strategy';
 import { ObjectionModule } from '@willsoto/nestjs-objection';
 import { Client } from '../clients/client.model'
 import { AuthResolver } from './auth.resolver';
+import { ListOfTasksModule } from 'src/Lists/list.module';
 
 
 @Module({
   imports: [
     ClientModule,
+    ListOfTasksModule,
     PassportModule,
     ObjectionModule.forFeature([Client]),
     JwtModule.registerAsync({

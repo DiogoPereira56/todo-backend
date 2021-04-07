@@ -1,6 +1,6 @@
 import { Inject, Injectable } from "@nestjs/common";
 import { Request } from "express";
-import { AuthService } from "src/auth/auth.service";
+/* import { AuthService } from "src/auth/auth.service"; */
 import { ListOfTasks } from "./list.model";
 
 
@@ -9,7 +9,7 @@ export class ListOfTasksService{
     /** Injects the Lists */
     constructor( 
         @Inject(ListOfTasks) private readonly ListOfTasksModel: typeof ListOfTasks,
-        private authService: AuthService
+        /* private authService: AuthService */
         ){}
 
     /** 
@@ -32,12 +32,11 @@ export class ListOfTasksService{
      *
      *  @example createList(listName, idClient);
     */
-    async createList( listName: string, req: Request ): Promise<Boolean>{
-        const decodedToken = await this.authService.decodeToken(req)
+    async createList( listName: string, id: number ): Promise<Boolean>{
         
         try{
             const newList = await this.ListOfTasksModel.query().insert({
-                idClient: decodedToken.id,
+                idClient: id,
                 listName: listName,
             });
             console.log(listName + ' List got Added');
@@ -49,11 +48,15 @@ export class ListOfTasksService{
         }
     }
     
-    async test(){
+    async testList(){
         const lists = await this.ListOfTasksModel.query().where('idClient', 3).withGraphFetched("tasks");
         /* console.log(lists[0]); */
         return lists;
     }
 
+
+    async getClientLists(idClient : number): Promise<ListOfTasks[]>{
+        return await this.ListOfTasksModel.query().where('idClient', '=', idClient);
+    }
 
 }

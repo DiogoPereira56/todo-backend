@@ -24,6 +24,9 @@ export class Client extends Model {
   
   password : string;
 
+  /* @Field(() => [ListOfTasks])
+  lists : ListOfTasks[]; */
+
   static get relationMappings() {
     
     return {
