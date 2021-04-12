@@ -61,12 +61,6 @@ export class ClientResolver{
         return this.ClientService.getClientById(idClient);
     }
 
-    /* @Query('client') */
-    @Query(returns => Client)  
-    async getClientInformation(@Args('idClient') idClient: number) {
-      return this.ClientService.getClientById(idClient);
-    }
-
     /* @Query(returns => ListOfTasks) */
     @ResolveField('lists', () => [ListOfTasks])
     async getLists(@Parent() client: Client): Promise<ListOfTasks[]> {

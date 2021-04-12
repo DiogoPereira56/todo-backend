@@ -19,8 +19,8 @@ import { ListOfTasksModule } from 'src/Lists/list.module';
     JwtModule.registerAsync({
       useFactory: () => ({
         secret: process.env.JWT_SECRET,
-        signOptions: { /** Sets a timer for Login to expire in 1800s */
-          expiresIn: '1800s' 
+        signOptions: { /** Sets a timer for Login to expire in 86400s (1 day) */
+          expiresIn: '86400s' 
         },
       }),
     }),

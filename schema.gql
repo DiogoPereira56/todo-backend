@@ -40,15 +40,22 @@ type decodedToken {
 type Query {
   clients: [ClientType!]!
   client(idClient: Float!): Client!
-  getClientInformation(idClient: Float!): Client!
   lists: [ListOfTasks!]!
   testList: [ListOfTasks!]!
   tasks: [task!]!
   removeToken: String!
   getDecodedToken: decodedToken!
+  getClientInformation: Client!
 }
 
 type Mutation {
+  removeList(idList: Float!): String!
+  updateList(title: String!, idList: Float!): ListOfTasks!
+  addTask(idList: Float!, title: String!): task!
+  removeTask(idTask: Float!): String!
+  updateTaskDescription(description: String!, idTask: Float!): task!
+  updateTaskCompletion(complete: Boolean!, idTask: Float!): task!
+  sortList(idTask: Float!): [task!]!
   login(email: String!, password: String!): Boolean!
   register(name: String!, email: String!, password: String!): Boolean!
   addList(listName: String!): Boolean!
