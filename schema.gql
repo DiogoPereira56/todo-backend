@@ -41,7 +41,6 @@ type Query {
   clients: [ClientType!]!
   client(idClient: Float!): Client!
   lists: [ListOfTasks!]!
-  testList: [ListOfTasks!]!
   tasks: [task!]!
   removeToken: String!
   getDecodedToken: decodedToken!

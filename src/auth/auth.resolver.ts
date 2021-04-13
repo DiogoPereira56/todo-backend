@@ -139,7 +139,23 @@ export class AuthResolver {
         return this.authService.createList(listName, ctx.req);
     }
 
-    /* @Query('client') */
+    /**
+     *  Changes the JWT cookie to 'invalid' to invalidate the cookie
+     *
+     *  @returns {String} Returns some client's information
+     *
+     *  @example
+     *  {
+            getClientInformation{
+                idClient
+                name
+                lists{
+                idList
+                listName
+                }
+            }
+        }
+     */
     @Query(() => Client)
     async getClientInformation(@Context() ctx: { res: Response; req: Request }) {
         const { id } = await this.authService.decodeToken(ctx.req);

@@ -5,11 +5,11 @@ import { TaskService } from './task.service';
 import { TaskResolver } from './task.resolver';
 
 @Module({
-  imports: [
-    /** Registers your objection models */
-    ObjectionModule.forFeature([Task])
-  ],
-  providers: [TaskResolver, TaskService],
-  exports: [TaskService],
+    imports: [
+        /** Registers your objection models */
+        ObjectionModule.forFeature([Task]),
+    ],
+    providers: [TaskResolver, TaskService],
+    exports: [TaskService],
 })
 export class TaskModule {}

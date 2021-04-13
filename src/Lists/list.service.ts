@@ -44,6 +44,15 @@ export class ListOfTasksService {
         }
     }
 
+    /**
+     *  Deletes a List and it's Tasks
+     *
+     *  @param {number} id - A Lists's id
+     *
+     *  @returns {string} - Returns a string saying that the list was removed
+     *
+     *  @example deleteList(id)
+     */
     async deleteList(id: number): Promise<string> {
         try {
             await this.ListOfTasksModel.query().deleteById(id);
@@ -53,17 +62,28 @@ export class ListOfTasksService {
         }
     }
 
+    /**
+     *  Updates the name of a List
+     *
+     * @param {number} id - A Lists's id
+     *
+     * @param {string} listName - A Lists's name
+     *
+     * @returns {ListOfTasks} - Returns the updated List
+     *
+     * @example updateList(idList, title);
+     */
     async updateList(id: number, listName: string): Promise<ListOfTasks> {
         await this.ListOfTasksModel.query().findById(id).patch({ listName: listName });
 
         return this.ListOfTasksModel.query().findById(id);
     }
 
-    async testList() {
+    /* async testList() {
         const lists = await this.ListOfTasksModel.query().where('idClient', 3).withGraphFetched('tasks');
-        /* console.log(lists[0]); */
+        //console.log(lists[0]);
         return lists;
-    }
+    } */
 
     async getClientLists(idClient: number): Promise<ListOfTasks[]> {
         return await this.ListOfTasksModel.query().where('idClient', '=', idClient);
