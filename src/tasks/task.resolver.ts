@@ -3,7 +3,6 @@ import { Resolver, Query, Mutation, Args } from '@nestjs/graphql';
 import { CurrentClient } from 'src/auth/auth.currentClient';
 import { GqlAuthGuard } from 'src/auth/auth.guard';
 import { Client } from 'src/clients/client.model';
-import { ListOfTasks } from 'src/Lists/list.model';
 import { Task } from './task.model';
 import { TaskService } from './task.service';
 
@@ -63,8 +62,14 @@ export class TaskResolver {
      */
     @UseGuards(GqlAuthGuard)
     @Mutation(() => String)
-    public async removeTask(@Args('idTask') idTask: number) {
-        return this.taskService.deleteTask(idTask);
+    public async removeTask(
+        @Args('idTask') idTask: number,
+        @Args('idClient') idClient: number,
+        @CurrentClient() loggedClient: Client,
+    ) {
+        if (idClient == loggedClient.idClient) {
+            return this.taskService.deleteTask(idTask);
+        }
     }
 
     /**
@@ -84,8 +89,12 @@ export class TaskResolver {
     public async updateTaskDescription(
         @Args('idTask') idTask: number,
         @Args('description') description: string,
+        @Args('idClient') idClient: number,
+        @CurrentClient() loggedClient: Client,
     ) {
-        return this.taskService.updateDescription(idTask, description);
+        if (idClient == loggedClient.idClient) {
+            return this.taskService.updateDescription(idTask, description);
+        }
     }
 
     /**
@@ -102,8 +111,15 @@ export class TaskResolver {
      */
     @UseGuards(GqlAuthGuard)
     @Mutation(() => Task)
-    public async updateTaskCompletion(@Args('idTask') idTask: number, @Args('complete') complete: boolean) {
-        return this.taskService.updateCompletion(idTask, complete);
+    public async updateTaskCompletion(
+        @Args('idTask') idTask: number,
+        @Args('complete') complete: boolean,
+        @Args('idClient') idClient: number,
+        @CurrentClient() loggedClient: Client,
+    ) {
+        if (idClient == loggedClient.idClient) {
+            return this.taskService.updateCompletion(idTask, complete);
+        }
     }
 
     @UseGuards(GqlAuthGuard)

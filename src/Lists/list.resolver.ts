@@ -1,10 +1,8 @@
-//import { UseGuards } from '@nestjs/common';
 import { UseGuards } from '@nestjs/common';
 import { Resolver, Query, Mutation, Args, ResolveField, Parent } from '@nestjs/graphql';
 import { CurrentClient } from 'src/auth/auth.currentClient';
 import { GqlAuthGuard } from 'src/auth/auth.guard';
 import { Client } from 'src/clients/client.model';
-//import { JwtStrategy } from 'src/auth/strategy/jwt.strategy';
 import { Task } from 'src/tasks/task.model';
 import { TaskService } from 'src/tasks/task.service';
 import { ListOfTasks } from './list.model';
@@ -66,8 +64,15 @@ export class ListOfTasksResolver {
      */
     @UseGuards(GqlAuthGuard)
     @Mutation(() => String)
-    public async removeList(@Args('idList') idList: number) {
-        return this.listOfTasksService.deleteList(idList);
+    public async removeList(
+        @Args('idList') idList: number,
+        @Args('idClient') idClient: number,
+        @CurrentClient() loggedClient: Client,
+    ) {
+        if (idClient == loggedClient.idClient) {
+            return this.listOfTasksService.deleteList(idList);
+        }
+        return null;
     }
 
     /**
@@ -84,8 +89,16 @@ export class ListOfTasksResolver {
      */
     @UseGuards(GqlAuthGuard)
     @Mutation(() => ListOfTasks)
-    public async updateList(@Args('idList') idList: number, @Args('title') title: string) {
-        return this.listOfTasksService.updateList(idList, title);
+    public async updateList(
+        @Args('idList') idList: number,
+        @Args('title') title: string,
+        @Args('idClient') idClient: number,
+        @CurrentClient() loggedClient: Client,
+    ) {
+        if (idClient == loggedClient.idClient) {
+            return this.listOfTasksService.updateList(idList, title);
+        }
+        return null;
     }
 
     /* @Query(() => [ListOfTasks])
