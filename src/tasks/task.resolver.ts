@@ -1,4 +1,9 @@
+import { UseGuards } from '@nestjs/common';
 import { Resolver, Query, Mutation, Args } from '@nestjs/graphql';
+import { CurrentClient } from 'src/auth/auth.currentClient';
+import { GqlAuthGuard } from 'src/auth/auth.guard';
+import { Client } from 'src/clients/client.model';
+import { ListOfTasks } from 'src/Lists/list.model';
 import { Task } from './task.model';
 import { TaskService } from './task.service';
 
@@ -14,6 +19,7 @@ export class TaskResolver {
      * @example
      *
      */
+    @UseGuards(GqlAuthGuard)
     @Query(() => [Task])
     async tasks(): Promise<Task[]> {
         return this.taskService.getAllTasks();
@@ -31,9 +37,18 @@ export class TaskResolver {
      * @example
      *
      */
+    @UseGuards(GqlAuthGuard)
     @Mutation(() => Task)
-    public async addTask(@Args('title') title: string, @Args('idList') idList: number) {
-        return this.taskService.createTask(title, idList);
+    public async addTask(
+        @Args('title') title: string,
+        @Args('idList') idList: number,
+        @Args('idClient') idClient: number,
+        @CurrentClient() loggedClient: Client,
+    ) {
+        if (idClient == loggedClient.idClient) {
+            return this.taskService.createTask(title, idList);
+        }
+        return null;
     }
 
     /**
@@ -46,6 +61,7 @@ export class TaskResolver {
      * @example
      *
      */
+    @UseGuards(GqlAuthGuard)
     @Mutation(() => String)
     public async removeTask(@Args('idTask') idTask: number) {
         return this.taskService.deleteTask(idTask);
@@ -64,6 +80,7 @@ export class TaskResolver {
      *
      */
     @Mutation(() => Task)
+    @UseGuards(GqlAuthGuard)
     public async updateTaskDescription(
         @Args('idTask') idTask: number,
         @Args('description') description: string,
@@ -83,11 +100,13 @@ export class TaskResolver {
      * @example
      *
      */
+    @UseGuards(GqlAuthGuard)
     @Mutation(() => Task)
     public async updateTaskCompletion(@Args('idTask') idTask: number, @Args('complete') complete: boolean) {
         return this.taskService.updateCompletion(idTask, complete);
     }
 
+    @UseGuards(GqlAuthGuard)
     @Mutation(() => [Task])
     public async sortList(@Args('idTask') idTask: number) {
         return this.taskService.sortAlphabeticaly(idTask);

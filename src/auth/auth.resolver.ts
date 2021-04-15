@@ -1,9 +1,12 @@
+import { UseGuards } from '@nestjs/common';
 import { Args, Context, Mutation, Query, Resolver } from '@nestjs/graphql';
 import { Request, Response } from 'express';
 import { Client } from 'src/clients/client.model';
 import { ClientService } from 'src/clients/client.service';
 import { ClientLoginInput } from 'src/clients/dto/client.login';
 import { ClientRegisterInput } from 'src/clients/dto/client.register';
+import { CurrentClient } from './auth.currentClient';
+import { GqlAuthGuard } from './auth.guard';
 import { AuthService } from './auth.service';
 import { decodedToken } from './dto/decoded.token';
 
@@ -89,6 +92,7 @@ export class AuthResolver {
      *          removeToken
      *      }
      */
+    @UseGuards(GqlAuthGuard)
     @Query(() => String)
     public async removeToken(@Context() ctx: { res: Response; req: Request }) {
         ctx.res.cookie('token', 'invalid');
@@ -111,7 +115,7 @@ export class AuthResolver {
      *          }
      *      }
      */
-    /* @UseGuards(GqlAuthGuard) */
+    @UseGuards(GqlAuthGuard)
     @Query(() => decodedToken)
     public async getDecodedToken(@Context() ctx: { res: Response; req: Request }) {
         /* this.authService.checkTimedOut(ctx.req); */
@@ -131,35 +135,20 @@ export class AuthResolver {
      * @example
      *
      */
+    @UseGuards(GqlAuthGuard)
     @Mutation(() => Boolean)
-    public async addList(
+    public async addList2(
         @Args('listName') listName: string,
         @Context() ctx: { res: Response; req: Request },
     ) {
         return this.authService.createList(listName, ctx.req);
     }
 
-    /**
-     *  Changes the JWT cookie to 'invalid' to invalidate the cookie
-     *
-     *  @returns {String} Returns some client's information
-     *
-     *  @example
-     *  {
-            getClientInformation{
-                idClient
-                name
-                lists{
-                idList
-                listName
-                }
-            }
-        }
-     */
     @Query(() => Client)
-    async getClientInformation(@Context() ctx: { res: Response; req: Request }) {
-        const { id } = await this.authService.decodeToken(ctx.req);
-
-        return this.clientService.getClientById(id);
+    @UseGuards(GqlAuthGuard)
+    whoAmI(@CurrentClient() client: Client) {
+        //console.log(client);
+        //return this.clientService.getClientById(client.idClient);
+        return client;
     }
 }

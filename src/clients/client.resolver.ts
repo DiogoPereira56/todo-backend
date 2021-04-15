@@ -1,5 +1,6 @@
 import { UseGuards } from '@nestjs/common';
 import { Resolver, Query, Args, ResolveField, Parent } from '@nestjs/graphql';
+import { CurrentClient } from 'src/auth/auth.currentClient';
 import { GqlAuthGuard } from 'src/auth/auth.guard';
 import { ListOfTasks } from 'src/Lists/list.model';
 import { ListOfTasksService } from 'src/Lists/list.service';
@@ -29,6 +30,7 @@ export class ClientResolver {
                 }
             }
     */
+    @UseGuards(GqlAuthGuard)
     @Query(() => [ClientType])
     async clients(): Promise<Client[]> {
         return this.clientService.getAllClients();
@@ -56,6 +58,31 @@ export class ClientResolver {
     @Query(() => Client)
     async client(@Args('idClient') idClient: number) {
         return this.clientService.getClientById(idClient);
+    }
+
+    /**
+     *  Changes the JWT cookie to 'invalid' to invalidate the cookie
+     *
+     *  @returns {String} Returns some client's information
+     *
+     *  @example
+     *  {
+            getClientInformation{
+                idClient
+                name
+                lists{
+                idList
+                listName
+                }
+            }
+        }
+     */
+    @UseGuards(GqlAuthGuard)
+    @Query(() => Client)
+    async getClientInformation(@CurrentClient() client: Client) {
+        //const { id } = await this.authService.decodeToken(ctx.req);
+
+        return this.clientService.getClientById(client.idClient);
     }
 
     /**
