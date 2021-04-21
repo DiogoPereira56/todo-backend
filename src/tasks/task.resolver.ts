@@ -122,6 +122,25 @@ export class TaskResolver {
         }
     }
 
+    @Query(() => [Task])
+    public async teste(@Args('limit') limit: number, @Args('offset') offset: number) {
+        return this.taskService.paginated(limit, offset);
+    }
+
+    @UseGuards(GqlAuthGuard)
+    @Mutation(() => Number)
+    async getListsTotalTasks(
+        @Args('idList') idList: number,
+        @Args('idClient') idClient: number,
+        @CurrentClient() loggedClient: Client,
+    ) {
+        if (idClient == loggedClient.idClient) {
+            const result = await this.taskService.getListsTotalTasks(idList);
+            return result;
+        }
+        return null;
+    }
+
     @UseGuards(GqlAuthGuard)
     @Mutation(() => [Task])
     public async sortList(@Args('idTask') idTask: number) {

@@ -106,6 +106,29 @@ export class ListOfTasksResolver {
         return this.listOfTasksService.testList();
     } */
 
+    @UseGuards(GqlAuthGuard)
+    @Query(() => Number)
+    async getClientTotalLists(@CurrentClient() client: Client) {
+        const result = await this.listOfTasksService.getClientTotalLists(client.idClient);
+        //console.log(result);
+        return result;
+    }
+
+    @UseGuards(GqlAuthGuard)
+    @Mutation(() => ListOfTasks)
+    public async getList(
+        @Args('idList') idList: number,
+        @Args('idClient') idClient: number,
+        @CurrentClient() loggedClient: Client,
+    ) {
+        if (idClient == loggedClient.idClient) {
+            const result = await this.listOfTasksService.getList(idList);
+            //console.log(result);
+            return result;
+        }
+        return null;
+    }
+
     /**
      * A ResolveField that returns the Tasks of a given List
      *
@@ -120,5 +143,15 @@ export class ListOfTasksResolver {
     async getTasks(@Parent() listOfTasks: ListOfTasks): Promise<Task[]> {
         const { idList } = listOfTasks;
         return this.taskService.getListTasks(idList);
+    }
+
+    @ResolveField('taskss', () => [Task])
+    async getTask(
+        @Parent() listOfTasks: ListOfTasks,
+        @Args('limit') limit: number,
+        @Args('offset') offset: number,
+    ): Promise<Task[]> {
+        const { idList } = listOfTasks;
+        return this.taskService.getListTask(idList, limit, offset);
     }
 }

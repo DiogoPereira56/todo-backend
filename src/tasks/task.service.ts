@@ -30,6 +30,10 @@ export class TaskService {
         return await this.TaskModel.query().where('idList', '=', idList);
     }
 
+    async getListTask(idList: number, limit: number, offset: number): Promise<Task[]> {
+        return await this.TaskModel.query().where('idList', '=', idList).limit(limit).offset(offset);
+    }
+
     /**
      *  Creates a new Task
      *
@@ -109,7 +113,17 @@ export class TaskService {
         return this.TaskModel.query().findById(id);
     }
 
+    async getListsTotalTasks(idList: number): Promise<number> {
+        return await this.TaskModel.query().where('idList', '=', idList).resultSize();
+    }
+
     async sortAlphabeticaly(id: number): Promise<Task[]> {
         return await this.TaskModel.query().where('idList', '=', id).orderBy('title');
+    }
+
+    async paginated(limit: number, offset: number): Promise<Task[]> {
+        const result = await this.TaskModel.query().limit(limit).offset(offset);
+        console.log(result.length);
+        return result;
     }
 }

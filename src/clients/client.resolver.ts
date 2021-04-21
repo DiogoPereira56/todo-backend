@@ -1,5 +1,5 @@
 import { UseGuards } from '@nestjs/common';
-import { Resolver, Query, Args, ResolveField, Parent } from '@nestjs/graphql';
+import { Resolver, Query, Args, ResolveField, Parent, Mutation } from '@nestjs/graphql';
 import { CurrentClient } from 'src/auth/auth.currentClient';
 import { GqlAuthGuard } from 'src/auth/auth.guard';
 import { ListOfTasks } from 'src/Lists/list.model';
@@ -85,6 +85,14 @@ export class ClientResolver {
         return this.clientService.getClientById(client.idClient);
     }
 
+    @UseGuards(GqlAuthGuard)
+    @Mutation(() => Client)
+    async getClientInformations(@CurrentClient() client: Client) {
+        //const { id } = await this.authService.decodeToken(ctx.req);
+
+        return this.clientService.getClientById(client.idClient);
+    }
+
     /**
      * A ResolveField that returns the lists of a given Client
      *
@@ -99,5 +107,15 @@ export class ClientResolver {
     async getLists(@Parent() client: Client): Promise<ListOfTasks[]> {
         const { idClient } = client;
         return this.listOfTasksService.getClientLists(idClient);
+    }
+
+    @ResolveField('list', () => [ListOfTasks])
+    async getList(
+        @Parent() client: Client,
+        @Args('limit') limit: number,
+        @Args('offset') offset: number,
+    ): Promise<ListOfTasks[]> {
+        const { idClient } = client;
+        return this.listOfTasksService.getClientList(idClient, limit, offset);
     }
 }

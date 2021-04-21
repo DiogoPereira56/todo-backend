@@ -16,6 +16,7 @@ type ListOfTasks {
   idClient: Int!
   listName: String!
   tasks: [task!]!
+  taskss(offset: Float!, limit: Float!): [task!]!
 }
 
 type Client {
@@ -23,6 +24,7 @@ type Client {
   name: String!
   email: String!
   lists: [ListOfTasks!]!
+  list(offset: Float!, limit: Float!): [ListOfTasks!]!
 }
 
 type ClientType {
@@ -42,20 +44,25 @@ type Query {
   client(idClient: Float!): Client!
   getClientInformation: Client!
   lists: [ListOfTasks!]!
+  getClientTotalLists: Float!
   tasks: [task!]!
+  teste(offset: Float!, limit: Float!): [task!]!
   removeToken: String!
   getDecodedToken: decodedToken!
   whoAmI: Client!
 }
 
 type Mutation {
+  getClientInformations: Client!
   addList(listName: String!): Boolean!
   removeList(idClient: Float!, idList: Float!): String!
   updateList(idClient: Float!, title: String!, idList: Float!): ListOfTasks!
+  getList(idClient: Float!, idList: Float!): ListOfTasks!
   addTask(idClient: Float!, idList: Float!, title: String!): task!
   removeTask(idClient: Float!, idTask: Float!): String!
   updateTaskDescription(idClient: Float!, description: String!, idTask: Float!): task!
   updateTaskCompletion(idClient: Float!, complete: Boolean!, idTask: Float!): task!
+  getListsTotalTasks(idClient: Float!, idList: Float!): Float!
   sortList(idTask: Float!): [task!]!
   login(email: String!, password: String!): Boolean!
   register(name: String!, email: String!, password: String!): Boolean!

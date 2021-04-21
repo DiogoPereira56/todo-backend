@@ -88,4 +88,19 @@ export class ListOfTasksService {
     async getClientLists(idClient: number): Promise<ListOfTasks[]> {
         return await this.ListOfTasksModel.query().where('idClient', '=', idClient);
     }
+
+    async getClientTotalLists(idClient: number) {
+        return await this.ListOfTasksModel.query().where('idClient', '=', idClient).resultSize();
+    }
+
+    async getClientList(idClient: number, limit: number, offset: number): Promise<ListOfTasks[]> {
+        return await this.ListOfTasksModel.query()
+            .where('idClient', '=', idClient)
+            .limit(limit)
+            .offset(offset);
+    }
+
+    async getList(idList: number): Promise<ListOfTasks> {
+        return await this.ListOfTasksModel.query().findById(idList);
+    }
 }

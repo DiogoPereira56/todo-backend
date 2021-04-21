@@ -74,6 +74,12 @@ export class ClientService {
         }
     }
 
+    /* async allClientTasks() {
+        const result = await this.ClientModel.query().joinRelated('lists').where('lists.idClient', 3);
+        console.log(result);
+        return result;
+    } */
+
     /*     async getAllClientInformation(idClient : number): Promise<Client>{
         return await this.ClientModel.query().findOne('idClient', idClient);
     } */
