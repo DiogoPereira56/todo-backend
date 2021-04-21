@@ -126,4 +126,31 @@ export class TaskService {
         console.log(result.length);
         return result;
     }
+
+    /**
+     * SELECT tasks.*
+        FROM todo.tasks
+        INNER JOIN todo.list_of_tasks ON list_of_tasks.idList = tasks.idList
+        INNER JOIN todo.client ON client.idClient = list_of_tasks.idClient
+        WHERE client.idClient = 3
+        ;
+     */
+    async getAllClientTasks(limit: number, offset: number, id: number): Promise<Task[]> {
+        return await this.TaskModel.query()
+            .select('tasks.*')
+            .innerJoin('list_of_tasks as lists', 'lists.idList', 'tasks.idList')
+            .innerJoin('client as client', 'client.idClient', 'lists.idClient')
+            .where('client.idClient', '=', id)
+            .limit(limit)
+            .offset(offset);
+    }
+
+    async getTotalAllClientTasks(id: number): Promise<number> {
+        return await this.TaskModel.query()
+            .select('tasks.*')
+            .innerJoin('list_of_tasks as lists', 'lists.idList', 'tasks.idList')
+            .innerJoin('client as client', 'client.idClient', 'lists.idClient')
+            .where('client.idClient', '=', id)
+            .resultSize();
+    }
 }

@@ -146,4 +146,20 @@ export class TaskResolver {
     public async sortList(@Args('idTask') idTask: number) {
         return this.taskService.sortAlphabeticaly(idTask);
     }
+
+    @UseGuards(GqlAuthGuard)
+    @Mutation(() => [Task])
+    public async getAllTasks(
+        @Args('limit') limit: number,
+        @Args('offset') offset: number,
+        @CurrentClient() loggedClient: Client,
+    ) {
+        return this.taskService.getAllClientTasks(limit, offset, loggedClient.idClient);
+    }
+
+    @UseGuards(GqlAuthGuard)
+    @Query(() => Number)
+    public async getTotalAllTasks(@CurrentClient() loggedClient: Client) {
+        return this.taskService.getTotalAllClientTasks(loggedClient.idClient);
+    }
 }
