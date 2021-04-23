@@ -62,6 +62,7 @@ type Mutation {
   addTask(idClient: Float!, idList: Float!, title: String!): task!
   removeTask(idClient: Float!, idTask: Float!): String!
   updateTaskDescription(idClient: Float!, description: String!, idTask: Float!): task!
+  updateTaskTitle(idClient: Float!, title: String!, idTask: Float!): task!
   updateTaskCompletion(idClient: Float!, complete: Boolean!, idTask: Float!): task!
   getListsTotalTasks(idClient: Float!, idList: Float!): Float!
   sortList(idTask: Float!): [task!]!

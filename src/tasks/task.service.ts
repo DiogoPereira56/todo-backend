@@ -97,6 +97,24 @@ export class TaskService {
     }
 
     /**
+     * updates a Task's title
+     *
+     * @param {number} idTask - The id of a Task
+     *
+     * @param {string} title - The title of a Task
+     *
+     * @returns {Task} - Returns the updated Task
+     *
+     * @example
+     *
+     */
+    async updateTitle(id: number, title: string): Promise<Task> {
+        await this.TaskModel.query().findById(id).patch({ title: title });
+
+        return this.TaskModel.query().findById(id);
+    }
+
+    /**
      *  Updates a Task's completion
      *
      * @param {number} id - A Task's id

@@ -98,6 +98,31 @@ export class TaskResolver {
     }
 
     /**
+     * updates a Task's title
+     *
+     * @param {number} idTask - The id of a Task
+     *
+     * @param {string} title - The title of a Task
+     *
+     * @returns {Task} - Returns the updated Task
+     *
+     * @example
+     *
+     */
+    @Mutation(() => Task)
+    @UseGuards(GqlAuthGuard)
+    public async updateTaskTitle(
+        @Args('idTask') idTask: number,
+        @Args('title') title: string,
+        @Args('idClient') idClient: number,
+        @CurrentClient() loggedClient: Client,
+    ) {
+        if (idClient == loggedClient.idClient) {
+            return this.taskService.updateTitle(idTask, title);
+        }
+    }
+
+    /**
      * updates a Task's completion
      *
      * @param {number} idTask - The id of a Task
