@@ -30,13 +30,13 @@ export class TaskService {
         return await this.TaskModel.query().where('idList', '=', idList);
     }
 
-    async getListTask(idList: number, limit: number, offset: number, orderByTitle: boolean): Promise<Task[]> {
-        if (orderByTitle) {
+    async getListTask(idList: number, limit: number, offset: number, orderByTitle: boolean): Promise<Task[]> { 
+        if (orderByTitle) { 
             return await this.TaskModel.query()
                 .where('idList', '=', idList)
                 .limit(limit)
                 .offset(offset)
-                .orderBy('title');
+                .orderBy('title'); 
         } else {
             return await this.TaskModel.query().where('idList', '=', idList).limit(limit).offset(offset);
         }
@@ -165,7 +165,7 @@ export class TaskService {
         limit: number,
         offset: number,
         id: number,
-        orderByTitle: boolean,
+        orderByTitle: boolean, 
     ): Promise<Task[]> {
         if (!orderByTitle) {
             return await this.TaskModel.query()
@@ -183,7 +183,7 @@ export class TaskService {
                 .where('client.idClient', '=', id)
                 .limit(limit)
                 .offset(offset)
-                .orderBy('title');
+                .orderBy('title'); 
         }
     }
 

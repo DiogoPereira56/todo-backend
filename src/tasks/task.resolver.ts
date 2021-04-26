@@ -178,11 +178,11 @@ export class TaskResolver {
         @Args('limit') limit: number,
         @Args('offset') offset: number,
         @Args('idClient') idClient: number,
-        @Args('orderByTitle') orderByTitle: boolean,
+        @Args('orderByTitle') orderByTitle: boolean, 
         @CurrentClient() loggedClient: Client,
     ) {
         if (idClient == loggedClient.idClient) {
-            return this.taskService.getAllClientTasks(limit, offset, idClient, orderByTitle);
+            return this.taskService.getAllClientTasks(limit, offset, idClient, orderByTitle); 
         }
         return null;
     }
