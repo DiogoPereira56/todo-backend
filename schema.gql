@@ -16,7 +16,7 @@ type ListOfTasks {
   idClient: Int!
   listName: String!
   tasks: [task!]!
-  taskss(offset: Float!, limit: Float!): [task!]!
+  taskss(orderByTitle: Boolean!, offset: Float!, limit: Float!): [task!]!
 }
 
 type Client {
@@ -65,8 +65,8 @@ type Mutation {
   updateTaskTitle(idClient: Float!, title: String!, idTask: Float!): task!
   updateTaskCompletion(idClient: Float!, complete: Boolean!, idTask: Float!): task!
   getListsTotalTasks(idClient: Float!, idList: Float!): Float!
-  sortList(idTask: Float!): [task!]!
-  getAllTasks(offset: Float!, limit: Float!): [task!]!
+  sortList(idList: Float!): [task!]!
+  getAllTasks(orderByTitle: Boolean!, idClient: Float!, offset: Float!, limit: Float!): [task!]!
   login(email: String!, password: String!): Boolean!
   register(name: String!, email: String!, password: String!): Boolean!
   addList2(listName: String!): Boolean!

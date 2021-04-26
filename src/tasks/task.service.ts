@@ -30,8 +30,24 @@ export class TaskService {
         return await this.TaskModel.query().where('idList', '=', idList);
     }
 
-    async getListTask(idList: number, limit: number, offset: number): Promise<Task[]> {
-        return await this.TaskModel.query().where('idList', '=', idList).limit(limit).offset(offset);
+    async getListTask(idList: number, limit: number, offset: number, orderByTitle: boolean): Promise<Task[]> {
+        if (orderByTitle) {
+            return await this.TaskModel.query()
+                .where('idList', '=', idList)
+                .limit(limit)
+                .offset(offset)
+                .orderBy('title');
+        } else {
+            return await this.TaskModel.query().where('idList', '=', idList).limit(limit).offset(offset);
+        }
+    }
+
+    async sortAlphabeticaly(idList: number): Promise<Task[]> {
+        return await this.TaskModel.query().where('idList', '=', idList).limit(5).offset(0).orderBy('title');
+    }
+
+    async getListsTotalTasks(idList: number): Promise<number> {
+        return await this.TaskModel.query().where('idList', '=', idList).resultSize();
     }
 
     /**
@@ -131,14 +147,6 @@ export class TaskService {
         return this.TaskModel.query().findById(id);
     }
 
-    async getListsTotalTasks(idList: number): Promise<number> {
-        return await this.TaskModel.query().where('idList', '=', idList).resultSize();
-    }
-
-    async sortAlphabeticaly(id: number): Promise<Task[]> {
-        return await this.TaskModel.query().where('idList', '=', id).orderBy('title');
-    }
-
     async paginated(limit: number, offset: number): Promise<Task[]> {
         const result = await this.TaskModel.query().limit(limit).offset(offset);
         console.log(result.length);
@@ -153,14 +161,30 @@ export class TaskService {
         WHERE client.idClient = 3
         ;
      */
-    async getAllClientTasks(limit: number, offset: number, id: number): Promise<Task[]> {
-        return await this.TaskModel.query()
-            .select('tasks.*')
-            .innerJoin('list_of_tasks as lists', 'lists.idList', 'tasks.idList')
-            .innerJoin('client as client', 'client.idClient', 'lists.idClient')
-            .where('client.idClient', '=', id)
-            .limit(limit)
-            .offset(offset);
+    async getAllClientTasks(
+        limit: number,
+        offset: number,
+        id: number,
+        orderByTitle: boolean,
+    ): Promise<Task[]> {
+        if (!orderByTitle) {
+            return await this.TaskModel.query()
+                .select('tasks.*')
+                .innerJoin('list_of_tasks as lists', 'lists.idList', 'tasks.idList')
+                .innerJoin('client as client', 'client.idClient', 'lists.idClient')
+                .where('client.idClient', '=', id)
+                .limit(limit)
+                .offset(offset);
+        } else {
+            return await this.TaskModel.query()
+                .select('tasks.*')
+                .innerJoin('list_of_tasks as lists', 'lists.idList', 'tasks.idList')
+                .innerJoin('client as client', 'client.idClient', 'lists.idClient')
+                .where('client.idClient', '=', id)
+                .limit(limit)
+                .offset(offset)
+                .orderBy('title');
+        }
     }
 
     async getTotalAllClientTasks(id: number): Promise<number> {

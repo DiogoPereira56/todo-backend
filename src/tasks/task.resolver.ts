@@ -168,8 +168,8 @@ export class TaskResolver {
 
     @UseGuards(GqlAuthGuard)
     @Mutation(() => [Task])
-    public async sortList(@Args('idTask') idTask: number) {
-        return this.taskService.sortAlphabeticaly(idTask);
+    public async sortList(@Args('idList') idList: number) {
+        return this.taskService.sortAlphabeticaly(idList);
     }
 
     @UseGuards(GqlAuthGuard)
@@ -177,9 +177,14 @@ export class TaskResolver {
     public async getAllTasks(
         @Args('limit') limit: number,
         @Args('offset') offset: number,
+        @Args('idClient') idClient: number,
+        @Args('orderByTitle') orderByTitle: boolean,
         @CurrentClient() loggedClient: Client,
     ) {
-        return this.taskService.getAllClientTasks(limit, offset, loggedClient.idClient);
+        if (idClient == loggedClient.idClient) {
+            return this.taskService.getAllClientTasks(limit, offset, idClient, orderByTitle);
+        }
+        return null;
     }
 
     @UseGuards(GqlAuthGuard)
