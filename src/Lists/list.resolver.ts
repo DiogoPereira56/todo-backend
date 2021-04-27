@@ -151,8 +151,9 @@ export class ListOfTasksResolver {
         @Args('limit') limit: number,
         @Args('offset') offset: number,
         @Args('orderByTitle') orderByTitle: boolean,
+        @Args('order') order: string,
     ): Promise<Task[]> {
         const { idList } = listOfTasks;
-        return this.taskService.getListTask(idList, limit, offset, orderByTitle);
+        return this.taskService.getListTask(idList, limit, offset, orderByTitle, order);
     }
 }

@@ -179,10 +179,11 @@ export class TaskResolver {
         @Args('offset') offset: number,
         @Args('idClient') idClient: number,
         @Args('orderByTitle') orderByTitle: boolean,
+        @Args('order') order: string,
         @CurrentClient() loggedClient: Client,
     ) {
         if (idClient == loggedClient.idClient) {
-            return this.taskService.getAllClientTasks(limit, offset, idClient, orderByTitle);
+            return this.taskService.getAllClientTasks(limit, offset, idClient, orderByTitle, order);
         }
         return null;
     }
@@ -201,10 +202,11 @@ export class TaskResolver {
         @Args('idClient') idClient: number,
         @Args('orderByTitle') orderByTitle: boolean,
         @Args('search') search: string,
+        @Args('order') order: string,
         @CurrentClient() loggedClient: Client,
     ) {
         if (idClient == loggedClient.idClient) {
-            return this.taskService.searchedTasks(limit, offset, idClient, orderByTitle, search);
+            return this.taskService.searchedTasks(limit, offset, idClient, orderByTitle, search, order);
         }
         return null;
     }

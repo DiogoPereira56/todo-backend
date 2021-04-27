@@ -30,15 +30,27 @@ export class TaskService {
         return await this.TaskModel.query().where('idList', '=', idList);
     }
 
-    async getListTask(idList: number, limit: number, offset: number, orderByTitle: boolean): Promise<Task[]> {
-        if (orderByTitle) {
+    async getListTask(
+        idList: number,
+        limit: number,
+        offset: number,
+        orderByTitle: boolean,
+        order: string,
+    ): Promise<Task[]> {
+        if (!orderByTitle) {
+            return await this.TaskModel.query().where('idList', '=', idList).limit(limit).offset(offset);
+        } else if (order == 'ASC') {
             return await this.TaskModel.query()
                 .where('idList', '=', idList)
                 .limit(limit)
                 .offset(offset)
-                .orderBy('title');
+                .orderBy('title', 'ASC');
         } else {
-            return await this.TaskModel.query().where('idList', '=', idList).limit(limit).offset(offset);
+            return await this.TaskModel.query()
+                .where('idList', '=', idList)
+                .limit(limit)
+                .offset(offset)
+                .orderBy('title', 'DESC');
         }
     }
 
@@ -166,6 +178,7 @@ export class TaskService {
         offset: number,
         id: number,
         orderByTitle: boolean,
+        order: string,
     ): Promise<Task[]> {
         if (!orderByTitle) {
             return await this.TaskModel.query()
@@ -175,7 +188,7 @@ export class TaskService {
                 .where('client.idClient', '=', id)
                 .limit(limit)
                 .offset(offset);
-        } else {
+        } else if (order == 'ASC') {
             return await this.TaskModel.query()
                 .select('tasks.*')
                 .innerJoin('list_of_tasks as lists', 'lists.idList', 'tasks.idList')
@@ -184,6 +197,15 @@ export class TaskService {
                 .limit(limit)
                 .offset(offset)
                 .orderBy('title', 'ASC');
+        } else {
+            return await this.TaskModel.query()
+                .select('tasks.*')
+                .innerJoin('list_of_tasks as lists', 'lists.idList', 'tasks.idList')
+                .innerJoin('client as client', 'client.idClient', 'lists.idClient')
+                .where('client.idClient', '=', id)
+                .limit(limit)
+                .offset(offset)
+                .orderBy('title', 'DESC');
         }
     }
 
@@ -210,6 +232,7 @@ export class TaskService {
         idClient: number,
         orderByTitle: boolean,
         search: string,
+        order: string,
     ): Promise<Task[]> {
         if (!orderByTitle) {
             return await this.TaskModel.query()
@@ -220,7 +243,7 @@ export class TaskService {
                 .where('tasks.title', 'LIKE', '%' + search + '%')
                 .limit(limit)
                 .offset(offset);
-        } else {
+        } else if (order == 'ASC') {
             return await this.TaskModel.query()
                 .select('tasks.*')
                 .innerJoin('list_of_tasks as lists', 'lists.idList', 'tasks.idList')
@@ -230,6 +253,16 @@ export class TaskService {
                 .limit(limit)
                 .offset(offset)
                 .orderBy('title', 'ASC');
+        } else {
+            return await this.TaskModel.query()
+                .select('tasks.*')
+                .innerJoin('list_of_tasks as lists', 'lists.idList', 'tasks.idList')
+                .innerJoin('client as client', 'client.idClient', 'lists.idClient')
+                .where('client.idClient', '=', idClient)
+                .where('tasks.title', 'LIKE', '%' + search + '%')
+                .limit(limit)
+                .offset(offset)
+                .orderBy('title', 'DESC');
         }
     }
 
