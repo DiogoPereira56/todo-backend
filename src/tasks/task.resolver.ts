@@ -178,11 +178,11 @@ export class TaskResolver {
         @Args('limit') limit: number,
         @Args('offset') offset: number,
         @Args('idClient') idClient: number,
-        @Args('orderByTitle') orderByTitle: boolean, 
+        @Args('orderByTitle') orderByTitle: boolean,
         @CurrentClient() loggedClient: Client,
     ) {
         if (idClient == loggedClient.idClient) {
-            return this.taskService.getAllClientTasks(limit, offset, idClient, orderByTitle); 
+            return this.taskService.getAllClientTasks(limit, offset, idClient, orderByTitle);
         }
         return null;
     }
@@ -191,5 +191,34 @@ export class TaskResolver {
     @Query(() => Number)
     public async getTotalAllTasks(@CurrentClient() loggedClient: Client) {
         return this.taskService.getTotalAllClientTasks(loggedClient.idClient);
+    }
+
+    @UseGuards(GqlAuthGuard)
+    @Mutation(() => [Task])
+    public async getSearchedTasks(
+        @Args('limit') limit: number,
+        @Args('offset') offset: number,
+        @Args('idClient') idClient: number,
+        @Args('orderByTitle') orderByTitle: boolean,
+        @Args('search') search: string,
+        @CurrentClient() loggedClient: Client,
+    ) {
+        if (idClient == loggedClient.idClient) {
+            return this.taskService.searchedTasks(limit, offset, idClient, orderByTitle, search);
+        }
+        return null;
+    }
+
+    @UseGuards(GqlAuthGuard)
+    @Mutation(() => Number)
+    public async getTotalSearchedTasks(
+        @Args('idClient') idClient: number,
+        @Args('search') search: string,
+        @CurrentClient() loggedClient: Client,
+    ) {
+        if (idClient == loggedClient.idClient) {
+            return this.taskService.totalSearchedTasks(idClient, search);
+        }
+        return null;
     }
 }

@@ -67,6 +67,8 @@ type Mutation {
   getListsTotalTasks(idClient: Float!, idList: Float!): Float!
   sortList(idList: Float!): [task!]!
   getAllTasks(orderByTitle: Boolean!, idClient: Float!, offset: Float!, limit: Float!): [task!]!
+  getSearchedTasks(search: String!, orderByTitle: Boolean!, idClient: Float!, offset: Float!, limit: Float!): [task!]!
+  getTotalSearchedTasks(search: String!, idClient: Float!): Float!
   login(email: String!, password: String!): Boolean!
   register(name: String!, email: String!, password: String!): Boolean!
   addList2(listName: String!): Boolean!
