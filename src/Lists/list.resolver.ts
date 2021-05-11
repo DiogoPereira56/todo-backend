@@ -5,6 +5,7 @@ import { GqlAuthGuard } from 'src/auth/auth.guard';
 import { Client } from 'src/clients/client.model';
 import { Task } from 'src/tasks/task.model';
 import { TaskService } from 'src/tasks/task.service';
+import { TasksResolveField } from './dto/task.resolveField';
 import { ListOfTasks } from './list.model';
 import { ListOfTasksService } from './list.service';
 
@@ -47,7 +48,7 @@ export class ListOfTasksResolver {
      *
      */
     @UseGuards(GqlAuthGuard)
-    @Mutation(() => Boolean)
+    @Mutation(() => ListOfTasks)
     public async addList(@Args('listName') listName: string, @CurrentClient() client: Client) {
         return this.listOfTasksService.createList(listName, client.idClient);
     }
@@ -91,12 +92,12 @@ export class ListOfTasksResolver {
     @Mutation(() => ListOfTasks)
     public async updateList(
         @Args('idList') idList: number,
-        @Args('title') title: string,
+        @Args('listName') listName: string,
         @Args('idClient') idClient: number,
         @CurrentClient() loggedClient: Client,
     ) {
         if (idClient == loggedClient.idClient) {
-            return this.listOfTasksService.updateList(idList, title);
+            return this.listOfTasksService.updateList(idList, listName);
         }
         return null;
     }
@@ -107,8 +108,16 @@ export class ListOfTasksResolver {
     } */
 
     @UseGuards(GqlAuthGuard)
-    @Query(() => Number)
+    @Mutation(() => Number)
     async getClientTotalLists(@CurrentClient() client: Client) {
+        const result = await this.listOfTasksService.getClientTotalLists(client.idClient);
+        //console.log(result);
+        return result;
+    }
+
+    @UseGuards(GqlAuthGuard)
+    @Query(() => Number)
+    async getTotalLists(@CurrentClient() client: Client) {
         const result = await this.listOfTasksService.getClientTotalLists(client.idClient);
         //console.log(result);
         return result;
@@ -117,6 +126,21 @@ export class ListOfTasksResolver {
     @UseGuards(GqlAuthGuard)
     @Mutation(() => ListOfTasks)
     public async getList(
+        @Args('idList') idList: number,
+        @Args('idClient') idClient: number,
+        @CurrentClient() loggedClient: Client,
+    ) {
+        if (idClient == loggedClient.idClient) {
+            const result = await this.listOfTasksService.getList(idList);
+            //console.log(result);
+            return result;
+        }
+        return null;
+    }
+
+    @UseGuards(GqlAuthGuard)
+    @Query(() => ListOfTasks)
+    public async listQuery(
         @Args('idList') idList: number,
         @Args('idClient') idClient: number,
         @CurrentClient() loggedClient: Client,
@@ -145,15 +169,20 @@ export class ListOfTasksResolver {
         return this.taskService.getListTasks(idList);
     }
 
-    @ResolveField('taskss', () => [Task])
+    @ResolveField('taskss', () => TasksResolveField)
     async getTask(
         @Parent() listOfTasks: ListOfTasks,
         @Args('limit') limit: number,
         @Args('offset') offset: number,
         @Args('orderByTitle') orderByTitle: boolean,
         @Args('order') order: string,
-    ): Promise<Task[]> {
+    ): Promise<TasksResolveField> {
         const { idList } = listOfTasks;
-        return this.taskService.getListTask(idList, limit, offset, orderByTitle, order);
+        const tasks = this.taskService.getListTask(idList, limit, offset, orderByTitle, order);
+        const totalTasks = this.taskService.getListsTotalTasks(idList);
+        const hasMore = (await totalTasks) - (offset + limit);
+        //console.log(totalTasks);
+        //console.log(hasMore);
+        return { tasks: tasks, hasMore: hasMore };
     }
 }

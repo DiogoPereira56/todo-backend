@@ -16,7 +16,7 @@ type ListOfTasks {
   idClient: Int!
   listName: String!
   tasks: [task!]!
-  taskss(order: String!, orderByTitle: Boolean!, offset: Float!, limit: Float!): [task!]!
+  taskss(order: String!, orderByTitle: Boolean!, offset: Float!, limit: Float!): TasksResolveField!
 }
 
 type Client {
@@ -34,6 +34,11 @@ type ClientType {
   password: String!
 }
 
+type TasksResolveField {
+  tasks: [task!]!
+  hasMore: Int!
+}
+
 type decodedToken {
   name: String!
   id: Int!
@@ -44,7 +49,8 @@ type Query {
   client(idClient: Float!): Client!
   getClientInformation: Client!
   lists: [ListOfTasks!]!
-  getClientTotalLists: Float!
+  getTotalLists: Float!
+  listQuery(idClient: Float!, idList: Float!): ListOfTasks!
   tasks: [task!]!
   teste(offset: Float!, limit: Float!): [task!]!
   getTotalAllTasks: Float!
@@ -55,9 +61,10 @@ type Query {
 
 type Mutation {
   getClientInformations: Client!
-  addList(listName: String!): Boolean!
+  addList(listName: String!): ListOfTasks!
   removeList(idClient: Float!, idList: Float!): String!
-  updateList(idClient: Float!, title: String!, idList: Float!): ListOfTasks!
+  updateList(idClient: Float!, listName: String!, idList: Float!): ListOfTasks!
+  getClientTotalLists: Float!
   getList(idClient: Float!, idList: Float!): ListOfTasks!
   addTask(idClient: Float!, idList: Float!, title: String!): task!
   removeTask(idClient: Float!, idTask: Float!): String!

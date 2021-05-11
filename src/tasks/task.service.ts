@@ -119,9 +119,7 @@ export class TaskService {
      * @example updateDescription(idTask, description);
      */
     async updateDescription(id: number, description: string): Promise<Task> {
-        await this.TaskModel.query().findById(id).patch({ description: description });
-
-        return this.TaskModel.query().findById(id);
+        return await this.TaskModel.query().patchAndFetchById(id, { description: description });
     }
 
     /**
@@ -137,9 +135,7 @@ export class TaskService {
      *
      */
     async updateTitle(id: number, title: string): Promise<Task> {
-        await this.TaskModel.query().findById(id).patch({ title: title });
-
-        return this.TaskModel.query().findById(id);
+        return await this.TaskModel.query().patchAndFetchById(id, { title: title });
     }
 
     /**
@@ -154,9 +150,7 @@ export class TaskService {
      * @example updateCompletion(idTask, complete);
      */
     async updateCompletion(id: number, complete: boolean): Promise<Task> {
-        await this.TaskModel.query().findById(id).patch({ complete: complete });
-
-        return this.TaskModel.query().findById(id);
+        return await this.TaskModel.query().patchAndFetchById(id, { complete: complete });
     }
 
     async paginated(limit: number, offset: number): Promise<Task[]> {

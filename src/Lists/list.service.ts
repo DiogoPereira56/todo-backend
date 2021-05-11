@@ -30,17 +30,17 @@ export class ListOfTasksService {
      *
      *  @example createList(listName, idClient);
      */
-    async createList(listName: string, id: number): Promise<boolean> {
+    async createList(listName: string, id: number): Promise<ListOfTasks> {
         try {
-            await this.ListOfTasksModel.query().insert({
+            const newList = await this.ListOfTasksModel.query().insert({
                 idClient: id,
                 listName: listName,
             });
             console.log(listName + ' List got Added');
-            return true;
+            return newList;
         } catch (err) {
             console.log(listName + ' was not Added');
-            return false;
+            throw err;
         }
     }
 
@@ -74,9 +74,7 @@ export class ListOfTasksService {
      * @example updateList(idList, title);
      */
     async updateList(id: number, listName: string): Promise<ListOfTasks> {
-        await this.ListOfTasksModel.query().findById(id).patch({ listName: listName });
-
-        return this.ListOfTasksModel.query().findById(id);
+        return await this.ListOfTasksModel.query().patchAndFetchById(id, { listName: listName });
     }
 
     /* async testList() {
