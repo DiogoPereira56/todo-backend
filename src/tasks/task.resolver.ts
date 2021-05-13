@@ -3,6 +3,7 @@ import { Resolver, Query, Mutation, Args } from '@nestjs/graphql';
 import { CurrentClient } from 'src/auth/auth.currentClient';
 import { GqlAuthGuard } from 'src/auth/auth.guard';
 import { Client } from 'src/clients/client.model';
+import { TasksResolveField } from 'src/Lists/dto/task.resolveField';
 import { Task } from './task.model';
 import { TaskService } from './task.service';
 
@@ -173,7 +174,7 @@ export class TaskResolver {
     }
 
     @UseGuards(GqlAuthGuard)
-    @Mutation(() => [Task])
+    @Query(() => TasksResolveField)
     public async getAllTasks(
         @Args('limit') limit: number,
         @Args('offset') offset: number,
@@ -183,7 +184,16 @@ export class TaskResolver {
         @CurrentClient() loggedClient: Client,
     ) {
         if (idClient == loggedClient.idClient) {
-            return this.taskService.getAllClientTasks(limit, offset, idClient, orderByTitle, order);
+            const tasks = await this.taskService.getAllClientTasks(
+                limit,
+                offset,
+                idClient,
+                orderByTitle,
+                order,
+            );
+            const totalTasks = await this.taskService.getTotalAllClientTasks(idClient);
+            const hasMore = totalTasks - (offset + limit);
+            return { tasks: tasks, hasMore: hasMore };
         }
         return null;
     }
@@ -195,7 +205,7 @@ export class TaskResolver {
     }
 
     @UseGuards(GqlAuthGuard)
-    @Mutation(() => [Task])
+    @Query(() => [Task])
     public async getSearchedTasks(
         @Args('limit') limit: number,
         @Args('offset') offset: number,
@@ -212,7 +222,7 @@ export class TaskResolver {
     }
 
     @UseGuards(GqlAuthGuard)
-    @Mutation(() => Number)
+    @Query(() => Number)
     public async getTotalSearchedTasks(
         @Args('idClient') idClient: number,
         @Args('search') search: string,

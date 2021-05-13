@@ -53,7 +53,10 @@ type Query {
   listQuery(idClient: Float!, idList: Float!): ListOfTasks!
   tasks: [task!]!
   teste(offset: Float!, limit: Float!): [task!]!
+  getAllTasks(order: String!, orderByTitle: Boolean!, idClient: Float!, offset: Float!, limit: Float!): TasksResolveField!
   getTotalAllTasks: Float!
+  getSearchedTasks(order: String!, search: String!, orderByTitle: Boolean!, idClient: Float!, offset: Float!, limit: Float!): [task!]!
+  getTotalSearchedTasks(search: String!, idClient: Float!): Float!
   removeToken: String!
   getDecodedToken: decodedToken!
   whoAmI: Client!
@@ -73,9 +76,6 @@ type Mutation {
   updateTaskCompletion(idClient: Float!, complete: Boolean!, idTask: Float!): task!
   getListsTotalTasks(idClient: Float!, idList: Float!): Float!
   sortList(idList: Float!): [task!]!
-  getAllTasks(order: String!, orderByTitle: Boolean!, idClient: Float!, offset: Float!, limit: Float!): [task!]!
-  getSearchedTasks(order: String!, search: String!, orderByTitle: Boolean!, idClient: Float!, offset: Float!, limit: Float!): [task!]!
-  getTotalSearchedTasks(search: String!, idClient: Float!): Float!
   login(email: String!, password: String!): Boolean!
   register(name: String!, email: String!, password: String!): Boolean!
   addList2(listName: String!): Boolean!
