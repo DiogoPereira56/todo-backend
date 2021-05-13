@@ -1,5 +1,6 @@
 import { Field, Int, ObjectType } from '@nestjs/graphql';
 import { Model } from 'objection';
+import { Client } from 'src/clients/client.model';
 import { Task } from '../tasks/task.model';
 
 @ObjectType()
@@ -37,6 +38,14 @@ export class ListOfTasks extends Model {
                 join: {
                     from: 'list_of_tasks.idList',
                     to: 'tasks.idList',
+                },
+            },
+            client: {
+                relation: Model.BelongsToOneRelation,
+                modelClass: Client,
+                join: {
+                    from: 'list_of_tasks.idClient',
+                    to: 'client.idClient',
                 },
             },
         };

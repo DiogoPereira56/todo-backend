@@ -2,6 +2,14 @@
 # THIS FILE WAS AUTOMATICALLY GENERATED (DO NOT MODIFY)
 # ------------------------------------------------------
 
+type Client {
+  idClient: Int!
+  name: String!
+  email: String!
+  lists: [ListOfTasks!]!
+  list(offset: Float!, limit: Float!): [ListOfTasks!]!
+}
+
 type task {
   """id of the Task"""
   idTask: Int!
@@ -17,14 +25,6 @@ type ListOfTasks {
   listName: String!
   tasks: [task!]!
   taskss(order: String!, orderByTitle: Boolean!, offset: Float!, limit: Float!): TasksResolveField!
-}
-
-type Client {
-  idClient: Int!
-  name: String!
-  email: String!
-  lists: [ListOfTasks!]!
-  list(offset: Float!, limit: Float!): [ListOfTasks!]!
 }
 
 type ClientType {
@@ -57,6 +57,7 @@ type Query {
   getTotalAllTasks: Float!
   getSearchedTasks(order: String!, search: String!, orderByTitle: Boolean!, idClient: Float!, offset: Float!, limit: Float!): [task!]!
   getTotalSearchedTasks(search: String!, idClient: Float!): Float!
+  testeAllTasks: [task!]!
   removeToken: String!
   getDecodedToken: decodedToken!
   whoAmI: Client!
