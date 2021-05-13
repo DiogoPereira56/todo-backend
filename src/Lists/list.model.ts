@@ -1,4 +1,5 @@
 import { Field, Int, ObjectType } from '@nestjs/graphql';
+import { Length } from 'class-validator';
 import { Model } from 'objection';
 import { Client } from 'src/clients/client.model';
 import { Task } from '../tasks/task.model';
@@ -25,6 +26,7 @@ export class ListOfTasks extends Model {
 
     /** Name of the list */
     @Field()
+    @Length(1, 90)
     listName: string;
 
     /* @Field(() => [Task])

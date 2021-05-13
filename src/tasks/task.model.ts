@@ -1,4 +1,5 @@
 import { Field, Int, ObjectType } from '@nestjs/graphql';
+import { Length } from 'class-validator';
 import { Model } from 'objection';
 import { ListOfTasks } from 'src/Lists/list.model';
 
@@ -24,6 +25,7 @@ export class Task extends Model {
 
     /** A title for the List */
     @Field()
+    @Length(1, 70)
     title: string;
 
     /** If the task is complete or not */
@@ -32,6 +34,7 @@ export class Task extends Model {
 
     /** Description of the Task */
     @Field()
+    @Length(1, 1350)
     description: string;
     static get relationMappings() {
         return {

@@ -8,7 +8,7 @@ import { IsEmail, IsNotEmpty, Length } from 'class-validator';
 export class ClientLoginInput {
     @Field()
     @IsEmail()
-    //@Length(1, 70)
+    @Length(1, 70)
     email: string;
 
     @Field()

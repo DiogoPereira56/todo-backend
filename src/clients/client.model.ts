@@ -1,4 +1,5 @@
 import { Field, Int, ObjectType } from '@nestjs/graphql';
+import { Length } from 'class-validator';
 import { Model } from 'objection';
 import { ListOfTasks } from '../Lists/list.model';
 
@@ -18,8 +19,10 @@ export class Client extends Model {
     @Field(() => Int)
     idClient: number;
     @Field()
+    @Length(3, 50)
     name?: string;
     @Field()
+    @Length(1, 70)
     email: string;
 
     password: string;

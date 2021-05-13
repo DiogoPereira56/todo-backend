@@ -7,7 +7,7 @@ import { IsEmail, IsNotEmpty, Length } from 'class-validator';
 @ArgsType()
 export class ClientRegisterInput {
     @Field()
-    //@Length(3, 50)
+    @Length(3, 50)
     name: string;
 
     @Field()
