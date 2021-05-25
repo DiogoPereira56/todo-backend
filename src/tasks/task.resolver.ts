@@ -233,10 +233,4 @@ export class TaskResolver {
         }
         return null;
     }
-
-    @UseGuards(GqlAuthGuard)
-    @Query(() => [Task])
-    async testeAllTasks() {
-        return this.taskService.allClientTasks();
-    }
 }

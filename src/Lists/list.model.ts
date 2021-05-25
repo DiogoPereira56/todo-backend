@@ -1,7 +1,7 @@
 import { Field, Int, ObjectType } from '@nestjs/graphql';
 import { Length } from 'class-validator';
 import { Model } from 'objection';
-import { Client } from 'src/clients/client.model';
+import { Client } from '../clients/client.model';
 import { Task } from '../tasks/task.model';
 
 @ObjectType()

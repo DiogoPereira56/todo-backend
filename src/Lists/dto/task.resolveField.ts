@@ -1,5 +1,5 @@
 import { Field, Int, ObjectType } from '@nestjs/graphql';
-import { Task } from 'src/tasks/task.model';
+import { Task } from '../../tasks/task.model';
 
 /**
  * Client Table

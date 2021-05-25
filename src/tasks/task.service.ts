@@ -159,14 +159,6 @@ export class TaskService {
         return result;
     }
 
-    async allClientTasks() {
-        const result = await this.TaskModel.query()
-            .joinRelated('[list.[client]]')
-            .where('list:client.idClient', 3);
-        console.log(result);
-        return result;
-    }
-
     /**
      * SELECT tasks.*
         FROM todo.tasks

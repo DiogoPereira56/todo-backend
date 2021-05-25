@@ -77,12 +77,6 @@ export class ListOfTasksService {
         return await this.ListOfTasksModel.query().patchAndFetchById(id, { listName: listName });
     }
 
-    /* async testList() {
-        const lists = await this.ListOfTasksModel.query().where('idClient', 3).withGraphFetched('tasks');
-        //console.log(lists[0]);
-        return lists;
-    } */
-
     async getClientLists(idClient: number): Promise<ListOfTasks[]> {
         return await this.ListOfTasksModel.query().where('idClient', '=', idClient);
     }

@@ -1,10 +1,10 @@
 import { UseGuards } from '@nestjs/common';
 import { Resolver, Query, Mutation, Args, ResolveField, Parent } from '@nestjs/graphql';
-import { CurrentClient } from 'src/auth/auth.currentClient';
-import { GqlAuthGuard } from 'src/auth/auth.guard';
-import { Client } from 'src/clients/client.model';
-import { Task } from 'src/tasks/task.model';
-import { TaskService } from 'src/tasks/task.service';
+import { CurrentClient } from '../auth/auth.currentClient';
+import { GqlAuthGuard } from '../auth/auth.guard';
+import { Client } from '../clients/client.model';
+import { Task } from '../tasks/task.model';
+import { TaskService } from '../tasks/task.service';
 import { TasksResolveField } from './dto/task.resolveField';
 import { ListOfTasks } from './list.model';
 import { ListOfTasksService } from './list.service';
@@ -101,11 +101,6 @@ export class ListOfTasksResolver {
         }
         return null;
     }
-
-    /* @Query(() => [ListOfTasks])
-    async testList() {
-        return this.listOfTasksService.testList();
-    } */
 
     @UseGuards(GqlAuthGuard)
     @Mutation(() => Number)
