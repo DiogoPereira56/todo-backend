@@ -7,7 +7,7 @@ import { JwtStrategy } from './strategy/jwt.strategy';
 import { ObjectionModule } from '@willsoto/nestjs-objection';
 import { Client } from '../clients/client.model';
 import { AuthResolver } from './auth.resolver';
-import { ListOfTasksModule } from 'src/Lists/list.module';
+import { ListOfTasksModule } from '../Lists/list.module';
 
 @Module({
     imports: [

@@ -1,10 +1,10 @@
 import { UseGuards } from '@nestjs/common';
 import { Args, Context, Mutation, Query, Resolver } from '@nestjs/graphql';
 import { Request, Response } from 'express';
-import { Client } from 'src/clients/client.model';
-import { ClientService } from 'src/clients/client.service';
-import { ClientLoginInput } from 'src/clients/dto/client.login';
-import { ClientRegisterInput } from 'src/clients/dto/client.register';
+import { Client } from '../clients/client.model';
+import { ClientService } from '../clients/client.service';
+import { ClientLoginInput } from '../clients/dto/client.login';
+import { ClientRegisterInput } from '../clients/dto/client.register';
 import { CurrentClient } from './auth.currentClient';
 import { GqlAuthGuard } from './auth.guard';
 import { AuthService } from './auth.service';
@@ -95,9 +95,10 @@ export class AuthResolver {
     @UseGuards(GqlAuthGuard)
     @Query(() => String)
     public async removeToken(@Context() ctx: { res: Response; req: Request }) {
-        ctx.res.cookie('token', 'invalid');
-        console.log('\n cookie removed');
-        return 'cookie removed';
+        //ctx.res.cookie('token', 'invalid');
+        const result = await this.authService.invalidateToken(ctx.res);
+        //console.log('\n cookie removed');
+        return result;
     }
 
     /**

@@ -1,9 +1,9 @@
 import { UseGuards } from '@nestjs/common';
 import { Resolver, Query, Args, ResolveField, Parent, Mutation } from '@nestjs/graphql';
-import { CurrentClient } from 'src/auth/auth.currentClient';
-import { GqlAuthGuard } from 'src/auth/auth.guard';
-import { ListOfTasks } from 'src/Lists/list.model';
-import { ListOfTasksService } from 'src/Lists/list.service';
+import { CurrentClient } from '../auth/auth.currentClient';
+import { GqlAuthGuard } from '../auth/auth.guard';
+import { ListOfTasks } from '../Lists/list.model';
+import { ListOfTasksService } from '../Lists/list.service';
 import { Client } from './client.model';
 import { ClientService } from './client.service';
 import { ClientType } from './dto/client.type';

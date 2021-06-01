@@ -1,8 +1,8 @@
 import { Client } from 'src/clients/client.model';
 import { TaskService } from 'src/tasks/task.service';
-import { ListOfTasks } from '../list.model';
-import { ListOfTasksResolver } from '../list.resolver';
-import { ListOfTasksService } from '../list.service';
+import { ListOfTasks } from './list.model';
+import { ListOfTasksResolver } from './list.resolver';
+import { ListOfTasksService } from './list.service';
 
 describe('listsResolver', () => {
     let listsResolver: ListOfTasksResolver;
@@ -15,7 +15,7 @@ describe('listsResolver', () => {
         listsResolver = new ListOfTasksResolver(listsService, tasksService);
     });
 
-    describe('findAll', () => {
+    describe('tests', () => {
         it('should return an array of all lists', async () => {
             const result = [{ idList: 1, idClient: 3, listName: 'list' }];
             jest.spyOn(listsService, 'getAllLists').mockImplementation(

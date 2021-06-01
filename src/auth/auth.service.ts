@@ -1,12 +1,12 @@
 import { Injectable } from '@nestjs/common';
 import { JwtService } from '@nestjs/jwt';
-import { Client } from 'src/clients/client.model';
+import { Client } from '../clients/client.model';
 import { ClientService } from '../clients/client.service';
 import * as bcrypt from 'bcrypt';
 import { Request, Response } from 'express';
 import { ConfigService } from '@nestjs/config';
 import { decodedToken } from './dto/decoded.token';
-import { ListOfTasksService } from 'src/Lists/list.service';
+import { ListOfTasksService } from '../Lists/list.service';
 
 @Injectable()
 export class AuthService {
@@ -38,8 +38,8 @@ export class AuthService {
             res.cookie('token', token);
 
             /* console.log(this.jwtService.decode(token)); */
-            console.log(token + '\n');
-            console.log(client.name + ' just logged in :D ');
+            //console.log(token + '\n');
+            //console.log(client.name + ' just logged in :D ');
             return true;
         }
         return false;
@@ -83,6 +83,11 @@ export class AuthService {
     async giveJwtToken(client: Client): Promise<string> {
         const payload = { name: client.name, id: client.idClient };
         return this.jwtService.sign(payload);
+    }
+
+    async invalidateToken(res: Response): Promise<string> {
+        res.cookie('token', 'invalid');
+        return 'cookie removed';
     }
 
     /**

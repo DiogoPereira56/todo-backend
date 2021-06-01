@@ -1,7 +1,7 @@
 import { Strategy } from 'passport-jwt';
 import { PassportStrategy } from '@nestjs/passport';
 import { Injectable, UnauthorizedException } from '@nestjs/common';
-import { ClientService } from 'src/clients/client.service';
+import { ClientService } from '../../clients/client.service';
 import { Request } from 'express';
 
 const cookieExtractor = function (req: Request) {

@@ -110,7 +110,7 @@ export class ListOfTasksResolver {
         return result;
     }
 
-    @UseGuards(GqlAuthGuard)
+    //@UseGuards(GqlAuthGuard)
     @Query(() => Number)
     async getTotalLists(@CurrentClient() client: Client) {
         const result = await this.listOfTasksService.getClientTotalLists(client.idClient);

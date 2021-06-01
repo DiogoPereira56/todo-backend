@@ -1,5 +1,5 @@
 import { Inject, Injectable } from '@nestjs/common';
-import { Client } from 'src/clients/client.model';
+import { Client } from '../clients/client.model';
 import * as bcrypt from 'bcrypt';
 import { ConfigService } from '@nestjs/config';
 

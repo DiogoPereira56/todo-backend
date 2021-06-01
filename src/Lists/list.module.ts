@@ -3,7 +3,7 @@ import { ObjectionModule } from '@willsoto/nestjs-objection';
 import { ListOfTasks } from './list.model';
 import { ListOfTasksService } from './list.service';
 import { ListOfTasksResolver } from './list.resolver';
-import { TaskModule } from 'src/tasks/task.module';
+import { TaskModule } from '../tasks/task.module';
 
 @Module({
     imports: [
